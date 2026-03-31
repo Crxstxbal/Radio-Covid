@@ -1,0 +1,100 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Mi Perfil{% endblock %}
+
+{% block content %}
+<div class="card-body">
+    <h4 class="text-center mb-4">Mi Perfil</h4>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- Información actual del usuario -->
+        <div class="text-center mb-4">
+            {% if user.avatar %}
+                <img src="{{ user.avatar.url }}" alt="Avatar" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;">
+            {% else %}
+                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center" style="width: 120px; height: 120px; margin: 0 auto;">
+                    <i class="fas fa-user fa-3x text-white"></i>
+                </div>
+            {% endif %}
+            <h5 class="mt-3">{{ user.get_full_name|default:user.username }}</h5>
+            <p class="text-muted">{{ user.email }}</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="first_name" class="form-label">Nombre</label>
+                    {{ form.first_name }}
+                    {% if form.first_name.errors %}
+                        <div class="text-danger small mt-1">
+                            {% for error in form.first_name.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="last_name" class="form-label">Apellido</label>
+                    {{ form.last_name }}
+                    {% if form.last_name.errors %}
+                        <div class="text-danger small mt-1">
+                            {% for error in form.last_name.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="bio" class="form-label">Biografía</label>
+            {{ form.bio }}
+            {% if form.bio.errors %}
+                <div class="text-danger small mt-1">
+                    {% for error in form.bio.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <small class="text-muted">Cuéntanos sobre ti... (máximo 500 caracteres)</small>
+        </div>
+
+        <div class="mb-3">
+            <label for="avatar" class="form-label">Foto de Perfil</label>
+            {{ form.avatar }}
+            {% if form.avatar.errors %}
+                <div class="text-danger small mt-1">
+                    {% for error in form.avatar.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <small class="text-muted">Formatos permitidos: JPG, PNG, GIF (máximo 5MB)</small>
+        </div>
+
+        <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save me-2"></i>Guardar Cambios
+            </button>
+            <a href="/users/cerrar-sesion/" class="btn btn-outline-danger">
+                <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

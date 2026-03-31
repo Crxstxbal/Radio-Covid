@@ -1,0 +1,87 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Estadísticas - Radio Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="page-title" style="font-size: 1.5rem;">
+        <i class="fas fa-chart-bar me-2"></i> Estadísticas
+    </h2>
+</div>
+
+<!-- Estadísticas en tiempo real -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card stat-card h-100">
+            <div class="card-body text-center">
+                <i class="fas fa-headphones fa-2x mb-3 opacity-75"></i>
+                <h3 class="mb-1">{{ oyentes_activos }}</h3>
+                <p class="mb-0 opacity-75">Oyentes en Vivo</p>
+                <small class="text-warning"><i class="fas fa-circle me-1"></i>En tiempo real</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card h-100" style="background: linear-gradient(135deg, var(--neon-purple) 0%, var(--dark-purple) 100%);">
+            <div class="card-body text-center">
+                <i class="fas fa-users fa-2x mb-3 opacity-75"></i>
+                <h3 class="mb-1">{{ total_usuarios }}</h3>
+                <p class="mb-0 opacity-75">Total Usuarios</p>
+                <small>{{ usuarios_activos_mes }} este mes</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card h-100" style="background: linear-gradient(135deg, var(--neon-orange) 0%, var(--neon-red) 100%);">
+            <div class="card-body text-center">
+                <i class="fas fa-user-shield fa-2x mb-3 opacity-75"></i>
+                <h3 class="mb-1">{{ usuarios_staff }}</h3>
+                <p class="mb-0 opacity-75">Administradores</p>
+                <small>Staff activo</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card h-100" style="background: linear-gradient(135deg, var(--neon-yellow) 0%, var(--neon-orange) 100%);">
+            <div class="card-body text-center">
+                <i class="fas fa-comments fa-2x mb-3 opacity-75"></i>
+                <h3 class="mb-1">{{ mensajes_chat|length }}</h3>
+                <p class="mb-0 opacity-75">Mensajes Chat</p>
+                <small>Últimos recientes</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Chat en vivo -->
+    <div class="col-md-4">
+        <div class="card glass-card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-comments me-2"></i> Chat en Vivo</h5>
+                <span class="badge bg-success"><i class="fas fa-circle me-1"></i>En vivo</span>
+            </div>
+            <div class="card-body p-0">
+                <div class="chat-feed" style="max-height: 400px; overflow-y: auto;">
+                    {% if mensajes_chat %}
+                        {% for mensaje in mensajes_chat %}
+                        <div class="chat-message p-2 border-bottom" style="border-color: var(--glass-border);">
+                            <div class="d-flex justify-content-between">
+                                <strong class="text-neon">{{ mensaje.usuario }}</strong>
+                                <small class="text-muted-custom">{{ mensaje.fecha_envio|date:"H:i" }}</small>
+                            </div>
+                            <p class="mb-0 text-white">{{ mensaje.mensaje }}</p>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center p-4">
+                            <i class="fas fa-comments text-muted-custom fa-2x mb-2"></i>
+                            <p class="text-muted-custom mb-0">No hay mensajes aún</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

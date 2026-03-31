@@ -1,0 +1,82 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Registro de Usuario{% endblock %}
+
+{% block content %}
+<div class="card-body">
+    <h4 class="text-center mb-4">Crear Nueva Cuenta</h4>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label for="username" class="form-label">Nombre de Usuario</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                {{ form.username }}
+            </div>
+            {% if form.username.errors %}
+                <div class="text-danger small mt-1">
+                    {% for error in form.username.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="email" class="form-label">Correo Electrónico</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                {{ form.email }}
+            </div>
+            {% if form.email.errors %}
+                <div class="text-danger small mt-1">
+                    {% for error in form.email.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="password1" class="form-label">Contraseña</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                {{ form.password1 }}
+            </div>
+            {% if form.password1.errors %}
+                <div class="text-danger small mt-1">
+                    {% for error in form.password1.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            <label for="password2" class="form-label">Confirmar Contraseña</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                {{ form.password2 }}
+            </div>
+            {% if form.password2.errors %}
+                <div class="text-danger small mt-1">
+                    {% for error in form.password2.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-user-plus me-2"></i>Registrarse
+            </button>
+            <a href="/users/iniciar-sesion/" class="btn btn-outline-secondary">
+                <i class="fas fa-sign-in-alt me-2"></i>¿Ya tienes cuenta? Inicia Sesión
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

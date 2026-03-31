@@ -1,0 +1,164 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block title %}Moderación del Chat - Radio Admin{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gradient">
+                <i class="fas fa-shield-alt me-2 text-warning"></i>Moderación del Chat
+            </h1>
+            <p class="text-muted-custom mb-0">Panel de control para moderar el chat en vivo</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{% url 'dashboard:chat_bloqueados' %}" class="btn btn-danger btn-sm">
+                <i class="fas fa-ban me-1"></i>Usuarios Bloqueados
+            </a>
+            <a href="{% url 'dashboard:chat_historial' %}" class="btn btn-info btn-sm">
+                <i class="fas fa-history me-1"></i>Historial
+            </a>
+        </div>
+    </div>
+
+    <!-- Estadísticas -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card glass-card text-center">
+                <div class="card-body">
+                    <h4 class="text-white">{{ total_mensajes_hoy }}</h4>
+                    <small class="text-muted-custom">Mensajes Hoy</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card glass-card text-center">
+                <div class="card-body">
+                    <h4 class="text-white">{{ usuarios_bloqueados_activos }}</h4>
+                    <small class="text-muted-custom">Bloqueados Activos</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card glass-card text-center">
+                <div class="card-body">
+                    <h4 class="text-white">{{ advertencias_hoy }}</h4>
+                    <small class="text-muted-custom">Advertencias Hoy</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card glass-card text-center">
+                <div class="card-body">
+                    <h4 class="text-white">{{ mensajes_recientes|length }}</h4>
+                    <small class="text-muted-custom">Mensajes Recientes</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mensajes Recientes -->
+    <div class="card glass-card">
+        <div class="glass-card-header d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-white">
+                <i class="fas fa-comments me-2"></i>Mensajes Recientes (Últimas 24h)
+            </h6>
+            <button onclick="location.reload()" class="btn btn-outline-custom btn-sm">
+                <i class="fas fa-sync-alt me-1"></i>Actualizar
+            </button>
+        </div>
+        <div class="card-body p-0">
+            {% if mensajes_recientes %}
+                <div class="list-group list-group-flush bg-transparent">
+                    {% for mensaje in mensajes_recientes %}
+                    <div class="list-group-item bg-transparent text-white border-0 border-bottom d-flex justify-content-between align-items-start py-3" style="border-color: rgba(170, 0, 255, 0.2) !important;">
+                        <div class="flex-grow-1">
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="badge bg-glass-primary me-2">{{ mensaje.usuario }}</span>
+                                <small class="text-muted-custom">{{ mensaje.fecha|date:"d/m/Y H:i" }}</small>
+                            </div>
+                            <p class="mb-0 text-white">{{ mensaje.mensaje }}</p>
+                        </div>
+                        <div class="d-flex gap-1 ms-3">
+                            <!-- Advertir -->
+                            <form action="{% url 'dashboard:advertir_usuario' mensaje.usuario %}" method="POST" class="d-inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="motivo" value="Mensaje inapropiado en chat">
+                                <button type="submit" class="btn btn-sm btn-warning" title="Advertir usuario">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </button>
+                            </form>
+                            
+                            <!-- Bloquear -->
+                            <form action="{% url 'dashboard:banear_usuario' mensaje.usuario %}" method="POST" class="d-inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="razon" value="Comportamiento inapropiado en chat">
+                                <button type="submit" class="btn btn-sm btn-danger" title="Bloquear usuario" onclick="return confirm('¿Bloquear a {{ mensaje.usuario }}?')">
+                                    <i class="fas fa-ban"></i>
+                                </button>
+                            </form>
+                            
+                            <!-- Eliminar mensaje -->
+                            <form action="{% url 'dashboard:eliminar_mensaje' mensaje.id %}" method="POST" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-sm btn-outline-light" title="Eliminar mensaje" onclick="return confirm('¿Eliminar este mensaje?')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state py-5">
+                    <i class="fas fa-comments fa-3x mb-3 opacity-50"></i>
+                    <h5 class="text-white mb-2">No hay mensajes recientes</h5>
+                    <p class="text-muted-custom">Los mensajes aparecerán aquí cuando los usuarios comiencen a chatear</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Acciones Recientes -->
+    {% if acciones_recientes %}
+    <div class="card glass-card mt-4">
+        <div class="glass-card-header">
+            <h6 class="m-0 font-weight-bold text-white">
+                <i class="fas fa-history me-2"></i>Acciones de Moderación Recientes
+            </h6>
+        </div>
+        <div class="card-body p-0">
+            <div class="list-group list-group-flush bg-transparent">
+                {% for accion in acciones_recientes %}
+                <div class="list-group-item bg-transparent text-white border-0 border-bottom py-2" style="border-color: rgba(170, 0, 255, 0.2) !important;">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="badge 
+                                {% if accion.tipo_accion == 'bloqueo' %}bg-danger
+                                {% elif accion.tipo_accion == 'desbloqueo_manual' %}bg-success
+                                {% elif accion.tipo_accion == 'advertencia' %}bg-warning text-dark
+                                {% else %}bg-info{% endif %} me-2">
+                                {{ accion.tipo_accion|title }}
+                            </span>
+                            <strong>{{ accion.moderador }}</strong> 
+                            {% if accion.tipo_accion == 'bloqueo' %}bloqueó a{% endif %}
+                            {% if accion.tipo_accion == 'desbloqueo_manual' %}desbloqueó a{% endif %}
+                            {% if accion.tipo_accion == 'advertencia' %}advirtió a{% endif %}
+                            {% if accion.tipo_accion == 'eliminacion' %}eliminó mensaje de{% endif %}
+                            <strong>{{ accion.usuario_afectado }}</strong>
+                        </div>
+                        <small class="text-muted-custom">{{ accion.fecha_accion|date:"H:i" }}</small>
+                    </div>
+                    {% if accion.detalles %}
+                    <small class="text-muted-custom d-block mt-1">{{ accion.detalles }}</small>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

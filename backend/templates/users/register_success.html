@@ -1,0 +1,24 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Registro Exitoso{% endblock %}
+
+{% block content %}
+<div class="card-body text-center">
+    <div class="mb-4">
+        <div class="auth-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        <h3 class="text-success">¡Cuenta Creada Exitosamente!</h3>
+        <p class="text-muted">Tu cuenta ha sido creada correctamente. Ahora puedes iniciar sesión.</p>
+    </div>
+    
+    <div class="d-grid gap-2 mt-4">
+        <a href="/users/iniciar-sesion/" class="btn btn-primary btn-lg">
+            <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión Ahora
+        </a>
+        <a href="/" class="btn btn-outline-secondary">
+            <i class="fas fa-home me-2"></i>Volver al Inicio
+        </a>
+    </div>
+</div>
+{% endblock %}

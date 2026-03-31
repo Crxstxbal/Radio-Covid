@@ -1,0 +1,443 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Dashboard - Radio Admin{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stat-card text-white">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h6 class="text-white-50 text-uppercase mb-1" style="font-size: 0.75rem; letter-spacing: 1px;">Oyentes Actuales</h6>
+                        <span class="h2 mb-0 font-weight-bold">{{ oyentes_actuales|default:0 }}</span>
+                    </div>
+                    <div class="col-auto">
+                        <div class="stat-card-icon">
+                            <i class="fas fa-users fa-lg text-white"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stat-card text-white">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h6 class="text-white-50 text-uppercase mb-1" style="font-size: 0.75rem; letter-spacing: 1px;">Total Conexiones Hoy</h6>
+                        <span class="h2 mb-0 font-weight-bold">{{ total_conexiones_hoy|default:0 }}</span>
+                    </div>
+                    <div class="col-auto">
+                        <div class="stat-card-icon">
+                            <i class="fas fa-plug fa-lg text-white"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stat-card text-white">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h6 class="text-white-50 text-uppercase mb-1" style="font-size: 0.75rem; letter-spacing: 1px;">Máximo Hoy</h6>
+                        <span class="h2 mb-0 font-weight-bold">{{ maximo_hoy|default:0 }}</span>
+                    </div>
+                    <div class="col-auto">
+                        <div class="stat-card-icon">
+                            <i class="fas fa-chart-line fa-lg text-white"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stat-card text-white">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h6 class="text-white-50 text-uppercase mb-1" style="font-size: 0.75rem; letter-spacing: 1px;">Estado</h6>
+                        <span class="h4 mb-0 font-weight-bold">
+                            {% if estacion_activa and estacion_activa.activa %}
+                                <span class="live-indicator">
+                                    <span class="live-dot"></span> En Vivo
+                                </span>
+                            {% else %}
+                                <i class="fas fa-circle text-secondary" style="font-size: 8px; vertical-align: middle;"></i> Offline
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="col-auto">
+                        <div class="stat-card-icon">
+                            <i class="fas fa-broadcast-tower fa-lg text-white"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 mb-4">
+        <div class="card glass-card">
+            <div class="glass-card-header">
+                <h6 class="m-0 font-weight-bold text-white">
+                    <i class="fas fa-broadcast-tower me-2 text-warning"></i>Estación de Radio
+                </h6>
+            </div>
+            <div class="card-body p-4">
+                {% if estacion_activa %}
+                    <div class="row">
+                        <div class="col-sm-2 text-center mb-3 mb-sm-0">
+                            {% if estacion_activa.logo %}
+                                <img src="{{ estacion_activa.logo.url }}" alt="{{ estacion_activa.nombre }}" class="img-fluid rounded" style="max-height: 80px; border: 2px solid rgba(170, 0, 255, 0.3);">
+                            {% else %}
+                                <div class="d-flex align-items-center justify-content-center" style="height: 80px; background: linear-gradient(135deg, rgba(170, 0, 255, 0.3) 0%, rgba(255, 23, 68, 0.3) 100%); border-radius: 12px; border: 1px solid rgba(170, 0, 255, 0.3); overflow: hidden;">
+                                    <img src="/static/img/dj_radio.png" alt="DJ Radio" style="max-height: 100%; max-width: 100%; object-fit: contain;">
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <h4 class="text-white mb-2">{{ estacion_activa.nombre }}</h4>
+                                    <p class="text-muted-custom mb-3">{{ estacion_activa.descripcion|default:"Sin descripción" }}</p>
+                                    <div class="mb-2">
+                                        <small class="text-muted-custom d-block mb-1">Streaming:</small>
+                                        <code>{{ estacion_activa.stream_url }}</code>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                    <span class="badge {% if estacion_activa.activa %}bg-glass-success{% else %}bg-glass-danger{% endif %} fs-6 px-3 py-2">
+                                        {% if estacion_activa.activa %}
+                                            <i class="fas fa-circle me-1" style="font-size: 8px;"></i> En Vivo
+                                        {% else %}
+                                            <i class="fas fa-circle me-1" style="font-size: 8px;"></i> Offline
+                                        {% endif %}
+                                    </span>
+                                    <div class="mt-3">
+                                        <a href="{% url 'dashboard:configurar_estacion' %}" class="btn btn-primary-custom btn-sm">
+                                            <i class="fas fa-edit me-1"></i> Configurar
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
+                        <h5 class="text-white mb-2">No hay estación configurada</h5>
+                        <p class="text-muted-custom mb-4">Configura una estación para comenzar a transmitir</p>
+                        <a href="{% url 'dashboard:configurar_estacion' %}" class="btn btn-primary-custom">
+                            <i class="fas fa-plus me-2"></i> Configurar Estación
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card glass-card">
+            <div class="glass-card-header d-flex justify-content-between align-items-center">
+                <h6 class="m-0 font-weight-bold text-white">
+                    <i class="fas fa-users me-2 text-info"></i>Oyentes Escuchando Ahora
+                </h6>
+            </div>
+            <div class="card-body p-0">
+                {% if oyentes_escuchando %}
+                    <div class="list-group list-group-flush bg-transparent">
+                        {% for oyente in oyentes_escuchando %}
+                        <div class="list-group-item bg-transparent text-white border-0 border-bottom" style="border-color: rgba(170, 0, 255, 0.2) !important;">
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <span class="badge bg-glass-success rounded-circle p-2">
+                                        <i class="fas fa-headphones"></i>
+                                    </span>
+                                </div>
+                                <div>
+                                    <span class="fw-bold">{{ oyente.usuario|default:"Anónimo" }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="empty-state py-4">
+                        <i class="fas fa-headphones fa-3x mb-3 opacity-50"></i>
+                        <h5 class="text-white mb-2">Nadie escuchando</h5>
+                        <p class="text-muted-custom">Los oyentes aparecerán aquí cuando comiencen a escuchar</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chat en Vivo - Moderación -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card glass-card">
+            <div class="glass-card-header d-flex justify-content-between align-items-center flex-wrap">
+                <h6 class="m-0 font-weight-bold text-white">
+                    <i class="fas fa-comments me-2 text-warning"></i>Chat en Vivo - Moderación
+                </h6>
+                <div class="d-flex gap-2 mt-2 mt-sm-0">
+                    <a href="{% url 'dashboard:chat_moderacion' %}" class="btn btn-primary-custom btn-sm">
+                        <i class="fas fa-shield-alt me-1"></i>Panel de Moderación
+                    </a>
+                    <a href="{% url 'dashboard:chat_bloqueados' %}" class="btn btn-danger btn-sm">
+                        <i class="fas fa-ban me-1"></i>Usuarios Bloqueados
+                    </a>
+                    <a href="{% url 'dashboard:chat_historial' %}" class="btn btn-info btn-sm">
+                        <i class="fas fa-history me-1"></i>Historial
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="card bg-transparent border" style="border-color: rgba(170, 0, 255, 0.3) !important;">
+                            <div class="card-body text-center">
+                                <i class="fas fa-users fa-2x text-info mb-2"></i>
+                                <h4 class="text-white mb-1" id="chat-online-count">0</h4>
+                                <small class="text-muted-custom">Usuarios en Chat</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card bg-transparent border" style="border-color: rgba(255, 193, 7, 0.3) !important;">
+                            <div class="card-body text-center">
+                                <i class="fas fa-exclamation-triangle fa-2x text-warning mb-2"></i>
+                                <h4 class="text-white mb-1" id="chat-advertencias-count">0</h4>
+                                <small class="text-muted-custom">Advertencias Hoy</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card bg-transparent border" style="border-color: rgba(255, 23, 68, 0.3) !important;">
+                            <div class="card-body text-center">
+                                <i class="fas fa-ban fa-2x text-danger mb-2"></i>
+                                <h4 class="text-white mb-1" id="chat-bloqueados-count">0</h4>
+                                <small class="text-muted-custom">Usuarios Bloqueados</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-3">
+                    <h6 class="text-white mb-3">Últimos Mensajes del Chat:</h6>
+                    <div id="chat-mensajes-container" class="list-group list-group-flush bg-transparent" style="max-height: 300px; overflow-y: auto;">
+                        <div class="text-center text-muted-custom py-4">
+                            <i class="fas fa-spinner fa-spin me-2"></i>Cargando mensajes...
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Auto-refresh página cada 30 segundos
+setTimeout(function(){
+    location.reload();
+}, 30000);
+
+// Actualizar oyentes en tiempo real cada 5 segundos
+function actualizarOyentes() {
+    fetch('/api/oyentes/conteo_actual/')
+        .then(response => response.json())
+        .then(data => {
+            // Actualizar contador de oyentes actuales
+            const oyentesElement = document.querySelector('.stat-card:first-child .h2');
+            if (oyentesElement && data.conteo !== undefined) {
+                oyentesElement.textContent = data.conteo;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+// Actualizar cada 5 segundos
+setInterval(actualizarOyentes, 5000);
+
+// Primera carga inmediata
+actualizarOyentes();
+
+// ─── Funciones para Chat en Vivo ─────────────────────────────────────────
+
+// Actualizar datos del chat
+function actualizarChatData() {
+    // Obtener conteo de usuarios online
+    fetch('/api/chat/usuarios-online/')
+        .then(response => response.json())
+        .then(data => {
+            const onlineCount = document.getElementById('chat-online-count');
+            if (onlineCount && data.usuarios_online !== undefined) {
+                onlineCount.textContent = data.usuarios_online;
+            }
+        })
+        .catch(error => console.error('Error al obtener usuarios online:', error));
+    
+    // Obtener lista de bloqueados
+    fetch('/api/chat/bloqueados/')
+        .then(response => response.json())
+        .then(data => {
+            const bloqueadosCount = document.getElementById('chat-bloqueados-count');
+            if (bloqueadosCount && data.bloqueados) {
+                bloqueadosCount.textContent = data.total || 0;
+            }
+        })
+        .catch(error => console.error('Error al obtener bloqueados:', error));
+    
+    // Obtener mensajes recientes
+    fetch('/api/chat/mensajes/')
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('chat-mensajes-container');
+            if (container && data.mensajes) {
+                // Mostrar últimos 5 mensajes
+                const ultimosMensajes = data.mensajes.slice(-5).reverse();
+                let html = '';
+                ultimosMensajes.forEach(msg => {
+                    const fecha = new Date(msg.timestamp).toLocaleTimeString('es-ES', { 
+                        hour: '2-digit', 
+                        minute: '2-digit' 
+                    });
+                    html += `
+                        <div class="list-group-item bg-transparent text-white border-bottom" style="border-color: rgba(170, 0, 255, 0.2) !important; padding: 8px 16px;">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <span class="fw-bold text-warning" style="font-size: 0.85rem;">${msg.usuario}</span>
+                                    <small class="text-muted-custom ms-1" style="font-size: 0.75rem;">${fecha}</small>
+                                    <p class="mb-0 text-white mt-1" style="font-size: 0.9rem;">${msg.mensaje.substring(0, 100)}${msg.mensaje.length > 100 ? '...' : ''}</p>
+                                </div>
+                                <div class="d-flex gap-1">
+                                    <button onclick="eliminarMensaje(${msg.id})" class="btn btn-sm btn-outline-danger" style="padding: 2px 6px; font-size: 0.7rem;" title="Eliminar">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button onclick="advertirUsuario('${msg.usuario}', '${msg.mensaje.replace(/'/g, "\\'")}')" class="btn btn-sm btn-outline-warning" style="padding: 2px 6px; font-size: 0.7rem;" title="Advertir">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </button>
+                                    <button onclick="bloquearUsuario('${msg.usuario}')" class="btn btn-sm btn-outline-purple" style="padding: 2px 6px; font-size: 0.7rem; border-color: #AA00FF; color: #AA00FF;" title="Bloquear">
+                                        <i class="fas fa-ban"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                container.innerHTML = html || '<div class="text-center text-muted-custom py-3">No hay mensajes recientes</div>';
+            }
+        })
+        .catch(error => console.error('Error al obtener mensajes:', error));
+}
+
+// Funciones de moderación inline
+function eliminarMensaje(mensajeId) {
+    if (confirm('¿Eliminar este mensaje?')) {
+        fetch(`/api/chat/mensajes/${mensajeId}/`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                moderador: '{{ request.user.username }}',
+                razon: 'Eliminado desde dashboard'
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                actualizarChatData();
+            }
+        })
+        .catch(error => console.error('Error al eliminar:', error));
+    }
+}
+
+function advertirUsuario(username, mensaje) {
+    const razon = prompt(`¿Razón de la advertencia para ${username}?`);
+    if (razon) {
+        fetch('/api/chat/advertir/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                username: username,
+                moderador: '{{ request.user.username }}',
+                razon: razon,
+                mensaje_original: mensaje
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                alert(`Advertencia enviada a ${username}`);
+            }
+        })
+        .catch(error => console.error('Error al advertir:', error));
+    }
+}
+
+function bloquearUsuario(username) {
+    if (confirm(`¿Bloquear a ${username} permanentemente?`)) {
+        const razon = prompt('¿Razón del bloqueo?') || 'Bloqueo desde dashboard';
+        fetch('/api/chat/bloquear/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                username: username,
+                moderador: '{{ request.user.username }}',
+                razon: razon,
+                permanente: true
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                alert(`Usuario ${username} bloqueado`);
+                actualizarChatData();
+            }
+        })
+        .catch(error => console.error('Error al bloquear:', error));
+    }
+}
+
+// Helper para obtener CSRF token
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// Actualizar chat cada 3 segundos
+setInterval(actualizarChatData, 3000);
+
+// Primera carga
+actualizarChatData();
+</script>
+{% endblock %}

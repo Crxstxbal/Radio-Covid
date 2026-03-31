@@ -1,0 +1,143 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-user me-2"></i>{{ page_title }}
+                    </h6>
+                    <a href="{% url 'dashboard:ver_usuarios' %}" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Volver a Usuarios
+                    </a>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Información principal -->
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            {% if usuario.avatar %}
+                                <img src="{{ usuario.avatar.url }}" alt="{{ usuario.username }}" 
+                                     class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                            {% else %}
+                                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center mx-auto mb-3" 
+                                     style="width: 150px; height: 150px;">
+                                    <i class="fas fa-user text-white" style="font-size: 60px;"></i>
+                                </div>
+                            {% endif %}
+                            
+                            <h4>{{ usuario.username }}</h4>
+                            {% if usuario.first_name %}
+                                <p class="text-muted">{{ usuario.first_name }} {{ usuario.last_name }}</p>
+                            {% endif %}
+                            
+                            <div class="mt-3">
+                                <span class="badge bg-{{ usuario.is_active|yesno:'success,secondary' }} me-2">
+                                    {{ usuario.is_active|yesno:"Activo,Inactivo" }}
+                                </span>
+                                <span class="badge bg-{{ usuario.is_staff|yesno:'warning,secondary' }}">
+                                    {{ usuario.is_staff|yesno:"Staff,Usuario" }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Detalles -->
+                    <div class="col-md-8">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Información de Cuenta</h6>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td><strong>Usuario:</strong></td>
+                                        <td>{{ usuario.username }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Email:</strong></td>
+                                        <td>{{ usuario.email }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Fecha Registro:</strong></td>
+                                        <td>{{ usuario.date_joined|date:"d/m/Y H:i" }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Último Login:</strong></td>
+                                        <td>
+                                            {% if usuario.last_login %}
+                                                {{ usuario.last_login|date:"d/m/Y H:i" }}
+                                            {% else %}
+                                                <span class="text-muted">Nunca</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <h6>Estadísticas</h6>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td><strong>Estado:</strong></td>
+                                        <td>
+                                            <span class="badge bg-{{ usuario.is_active|yesno:'success,secondary' }}">
+                                                {{ usuario.is_active|yesno:"Activo,Inactivo" }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Tipo:</strong></td>
+                                        <td>
+                                            <span class="badge bg-{{ usuario.is_staff|yesno:'warning,secondary' }}">
+                                                {{ usuario.is_staff|yesno:"Staff,Usuario" }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Conexiones:</strong></td>
+                                        <td>{{ conexiones_usuario }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>ID:</strong></td>
+                                        <td>{{ usuario.id }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Acciones -->
+                        <div class="mt-4">
+                            <h6>Acciones Rápidas</h6>
+                            <div class="btn-group" role="group">
+                                <form method="post" action="{% url 'dashboard:toggle_usuario_staff' usuario.id %}" 
+                                      class="d-inline" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" 
+                                            class="btn btn-{{ usuario.is_staff|yesno:'warning,success' }}">
+                                        <i class="fas fa-user-shield"></i>
+                                        {{ usuario.is_staff|yesno:"Quitar Staff,Hacer Staff" }}
+                                    </button>
+                                </form>
+                                
+                                <form method="post" action="{% url 'dashboard:toggle_usuario_activo' usuario.id %}" 
+                                      class="d-inline" style="display: inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" 
+                                            class="btn btn-{{ usuario.is_active|yesno:'danger,success' }}">
+                                        <i class="fas fa-{{ usuario.is_active|yesno:'ban,check' }}"></i>
+                                        {{ usuario.is_active|yesno:"Desactivar,Activar" }}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

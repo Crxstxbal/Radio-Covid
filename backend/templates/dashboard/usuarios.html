@@ -1,0 +1,176 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Gestión de Usuarios{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Estadísticas de Usuarios -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="card-title text-uppercase text-white-50 mb-0">Total Usuarios</h5>
+                        <span class="h2 font-weight-bold mb-0 text-white">{{ total_usuarios }}</span>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-users fa-2x text-white-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="card-title text-uppercase text-white-50 mb-0">Último Mes</h5>
+                        <span class="h2 font-weight-bold mb-0 text-white">{{ usuarios_activos_mes }}</span>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-user-plus fa-2x text-white-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="card-title text-uppercase text-white-50 mb-0">Staff</h5>
+                        <span class="h2 font-weight-bold mb-0 text-white">{{ usuarios_staff }}</span>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-user-shield fa-2x text-white-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card stat-card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col">
+                        <h5 class="card-title text-uppercase text-white-50 mb-0">Activos</h5>
+                        <span class="h2 font-weight-bold mb-0 text-white">
+                            {{ usuarios_activos }}
+                        </span>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-user-check fa-2x text-white-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Lista de Usuarios -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="m-0 font-weight-bold text-primary">
+                    <i class="fas fa-users me-2"></i>Lista de Usuarios Registrados
+                </h6>
+            </div>
+            <div class="card-body">
+                {% if usuarios %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Usuario</th>
+                                    <th>Email</th>
+                                    <th>Fecha Registro</th>
+                                    <th>Estado</th>
+                                    <th>Staff</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for usuario in usuarios %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            {% if usuario.avatar %}
+                                                <img src="{{ usuario.avatar.url }}" alt="{{ usuario.username }}" 
+                                                     class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
+                                            {% else %}
+                                                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-2" 
+                                                     style="width: 30px; height: 30px;">
+                                                    <i class="fas fa-user text-white"></i>
+                                                </div>
+                                            {% endif %}
+                                            <div>
+                                                <strong>{{ usuario.username }}</strong>
+                                                {% if usuario.first_name %}
+                                                    <br><small class="text-muted">{{ usuario.first_name }} {{ usuario.last_name }}</small>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ usuario.email }}</td>
+                                    <td>{{ usuario.date_joined|date:"d/m/Y H:i" }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ usuario.is_active|yesno:'success,secondary' }}">
+                                            {{ usuario.is_active|yesno:"Activo,Inactivo" }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-{{ usuario.is_staff|yesno:'warning,secondary' }}">
+                                            {{ usuario.is_staff|yesno:"Staff,Usuario" }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{% url 'dashboard:detalle_usuario' usuario.id %}" 
+                                               class="btn btn-sm btn-outline-primary">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            
+                                            <form method="post" action="{% url 'dashboard:toggle_usuario_staff' usuario.id %}" 
+                                                  class="d-inline" style="display: inline;">
+                                                {% csrf_token %}
+                                                <button type="submit" 
+                                                        class="btn btn-sm btn-{{ usuario.is_staff|yesno:'warning,success' }}">
+                                                    <i class="fas fa-user-shield"></i>
+                                                    {{ usuario.is_staff|yesno:"Quitar Staff,Hacer Staff" }}
+                                                </button>
+                                            </form>
+                                            
+                                            <form method="post" action="{% url 'dashboard:toggle_usuario_activo' usuario.id %}" 
+                                                  class="d-inline" style="display: inline;">
+                                                {% csrf_token %}
+                                                <button type="submit" 
+                                                        class="btn btn-sm btn-{{ usuario.is_active|yesno:'danger,success' }}">
+                                                    <i class="fas fa-{{ usuario.is_active|yesno:'ban,check' }}"></i>
+                                                    {{ usuario.is_active|yesno:"Desactivar,Activar" }}
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-users fa-3x text-muted mb-3"></i>
+                        <h5>No hay usuarios registrados</h5>
+                        <p class="text-muted">No se encontraron usuarios en el sistema.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
