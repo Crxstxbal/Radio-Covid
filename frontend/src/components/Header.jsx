@@ -63,7 +63,7 @@ const Header = () => {
         }`}
       >
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between w-full">
             {/* Logo */}
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -72,11 +72,11 @@ const Header = () => {
               <div className="w-10 h-10 bg-gradient-to-br from-neon-red to-neon-orange rounded-full flex items-center justify-center shadow-lg shadow-neon-red/30">
                 <Radio size={20} className="text-soft-white" />
               </div>
-              <img src={logo} alt="Radio Covid" className="h-8 w-auto" />
+              <img src={logo} alt="Radio Covid" className="h-10 w-auto" />
             </motion.div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-8">
+            <nav className="hidden md:flex items-center gap-8 absolute left-1/2 transform -translate-x-1/2">
               {user ? (
                 <>
                   <span className="text-soft-white/60">
@@ -102,46 +102,49 @@ const Header = () => {
               )}
             </nav>
 
-            {/* Social Links */}
-            <div className="hidden md:flex items-center gap-4">
-              <a
-                href="#"
-                className="text-soft-white/40 hover:text-neon-purple transition-colors"
-                aria-label="Facebook"
-              >
-                <Facebook size={18} />
-              </a>
-              <a
-                href="#"
-                className="text-soft-white/40 hover:text-neon-purple transition-colors"
-                aria-label="Twitter"
-              >
-                <Twitter size={18} />
-              </a>
-              <a
-                href="#"
-                className="text-soft-white/40 hover:text-neon-purple transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram size={18} />
-              </a>
-              <a
-                href="#"
-                className="text-soft-white/40 hover:text-neon-purple transition-colors"
-                aria-label="YouTube"
-              >
-                <Youtube size={18} />
-              </a>
-            </div>
+            {/* Social Links & Mobile Menu - Right */}
+            <div className="flex items-center gap-4">
+              {/* Desktop Social Links */}
+              <div className="hidden md:flex items-center gap-4">
+                <a
+                  href="#"
+                  className="text-soft-white/40 hover:text-neon-purple transition-colors"
+                  aria-label="Facebook"
+                >
+                  <Facebook size={18} />
+                </a>
+                <a
+                  href="#"
+                  className="text-soft-white/40 hover:text-neon-purple transition-colors"
+                  aria-label="Twitter"
+                >
+                  <Twitter size={18} />
+                </a>
+                <a
+                  href="#"
+                  className="text-soft-white/40 hover:text-neon-purple transition-colors"
+                  aria-label="Instagram"
+                >
+                  <Instagram size={18} />
+                </a>
+                <a
+                  href="#"
+                  className="text-soft-white/40 hover:text-neon-purple transition-colors"
+                  aria-label="YouTube"
+                >
+                  <Youtube size={18} />
+                </a>
+              </div>
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={toggleMobileMenu}
-              className="md:hidden text-soft-white hover:text-neon-yellow transition-colors"
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+              {/* Mobile Menu Button */}
+              <button
+                onClick={toggleMobileMenu}
+                className="md:hidden text-soft-white hover:text-neon-yellow transition-colors p-2 rounded-lg hover:bg-white/10"
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
 
           {/* Mobile Menu */}
@@ -150,7 +153,7 @@ const Header = () => {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="md:hidden bg-base-black/95 backdrop-blur-lg rounded-lg mt-2 p-4 border border-neon-purple/30"
+              className="md:hidden bg-base-black/95 backdrop-blur-lg rounded-xl mt-2 p-4 border border-neon-purple/30 shadow-xl"
             >
               <nav className="flex flex-col gap-4 mb-4">
                 {user ? (
@@ -235,104 +238,110 @@ const Header = () => {
       }`}
     >
       <div className="container mx-auto px-4">
-        <div className="flex items-center h-16 relative">
-          {/* Logo - Left */}
-          <motion.div
-            whileHover={{ scale: 1.05 }}
-            className="flex items-center gap-2"
-          >
-            <img src={logo} alt="Radio Covid" className="h-20 w-auto" />
-            <span className="text-xl font-bold text-soft-white tracking-wider">RADIO COVID</span>
-          </motion.div>
+        <div className="flex items-center justify-between w-full">
+          {/* Left Section: Logo and Desktop Navigation */}
+          <div className="flex items-center gap-4 lg:gap-8">
+            {/* Logo */}
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="flex items-center gap-2"
+            >
+              <img src={logo} alt="Radio Covid" className="h-12 w-auto md:h-20" />
+              <span className="text-lg md:text-xl font-bold text-soft-white tracking-wider hidden sm:inline">RADIO COVID</span>
+            </motion.div>
 
-          {/* Desktop Navigation - Center */}
-          <nav className="hidden md:flex items-center gap-8 absolute left-1/2 transform -translate-x-1/2">
-            <a href="/" className="text-soft-white/60 hover:text-neon-orange transition-colors">
-              Inicio
-            </a>
-            <a href="/programacion" className="text-soft-white/60 hover:text-neon-orange transition-colors">
-              Programación
-            </a>
-            <a href="/podcasts" className="text-soft-white/60 hover:text-neon-orange transition-colors">
-              Podcasts
-            </a>
-            <a href="/contacto" className="text-soft-white/60 hover:text-neon-orange transition-colors">
-              Contacto
-            </a>
-          </nav>
-
-          {/* Social Links - Right */}
-          <div className="hidden md:flex items-center gap-4 ml-auto">
-            {user ? (
-              <>
-                <span className="text-soft-white/60 text-sm">
-                  Hola, <span className="text-soft-white font-semibold">{user.username}</span>
-                </span>
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-neon-red to-neon-orange rounded-lg text-soft-white text-sm font-semibold hover:shadow-lg hover:shadow-neon-red/30 transition-all"
-                >
-                  <LogOut size={16} />
-                  Cerrar Sesión
-                </button>
-              </>
-            ) : (
-              <>
-                <a
-                  href="/login"
-                  className="flex items-center gap-2 px-4 py-2 border border-neon-purple/50 rounded-lg text-soft-white text-sm font-semibold hover:bg-neon-purple/20 transition-all"
-                >
-                  <User size={16} />
-                  Iniciar Sesión
-                </a>
-                <a
-                  href="/register"
-                  className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-neon-purple to-neon-orange rounded-lg text-soft-white text-sm font-semibold hover:shadow-lg hover:shadow-neon-purple/30 transition-all"
-                >
-                  <User size={16} />
-                  Registrarse
-                </a>
-              </>
-            )}
-            <div className="w-px h-6 bg-neon-purple/30 mx-2"></div>
-            <a
-              href="#"
-              className="text-soft-white/40 hover:text-neon-purple transition-colors"
-              aria-label="Facebook"
-            >
-              <Facebook size={18} />
-            </a>
-            <a
-              href="#"
-              className="text-soft-white/40 hover:text-neon-purple transition-colors"
-              aria-label="Twitter"
-            >
-              <Twitter size={18} />
-            </a>
-            <a
-              href="#"
-              className="text-soft-white/40 hover:text-neon-purple transition-colors"
-              aria-label="Instagram"
-            >
-              <Instagram size={18} />
-            </a>
-            <a
-              href="#"
-              className="text-soft-white/40 hover:text-neon-purple transition-colors"
-              aria-label="YouTube"
-            >
-              <Youtube size={18} />
-            </a>
+            {/* Desktop Navigation - Hidden on smaller tablets */}
+            <nav className="hidden lg:flex items-center gap-6">
+              <a href="/" className="text-soft-white/60 hover:text-neon-orange transition-colors">
+                Inicio
+              </a>
+              <a href="/programacion" className="text-soft-white/60 hover:text-neon-orange transition-colors">
+                Programación
+              </a>
+              <a href="/podcasts" className="text-soft-white/60 hover:text-neon-orange transition-colors">
+                Podcasts
+              </a>
+              <a href="/contacto" className="text-soft-white/60 hover:text-neon-orange transition-colors">
+                Contacto
+              </a>
+            </nav>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={toggleMobileMenu}
-            className="md:hidden text-soft-white hover:text-neon-purple transition-colors"
-            aria-label="Toggle menu"
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Right Section: Social Links, User Menu & Mobile Menu */}
+          <div className="flex items-center gap-2 lg:gap-4">
+            {/* Desktop Social Links & User Menu */}
+            <div className="hidden lg:flex items-center gap-4">
+              {user ? (
+                <>
+                  <span className="text-soft-white/60 text-sm">
+                    Hola, <span className="text-soft-white font-semibold">{user.username}</span>
+                  </span>
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-neon-red to-neon-orange rounded-lg text-soft-white text-sm font-semibold hover:shadow-lg hover:shadow-neon-red/30 transition-all"
+                  >
+                    <LogOut size={16} />
+                    Cerrar Sesión
+                  </button>
+                </>
+              ) : (
+                <>
+                  <a
+                    href="/login"
+                    className="flex items-center gap-2 px-3 py-2 border border-neon-purple/50 rounded-lg text-soft-white text-sm font-semibold hover:bg-neon-purple/20 transition-all"
+                  >
+                    <User size={16} />
+                    <span className="hidden xl:inline">Iniciar Sesión</span>
+                  </a>
+                  <a
+                    href="/register"
+                    className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-neon-purple to-neon-orange rounded-lg text-soft-white text-sm font-semibold hover:shadow-lg hover:shadow-neon-purple/30 transition-all"
+                  >
+                    <User size={16} />
+                    <span className="hidden xl:inline">Registrarse</span>
+                  </a>
+                </>
+              )}
+              <div className="w-px h-6 bg-neon-purple/30 mx-2"></div>
+              <a
+                href="#"
+                className="text-soft-white/40 hover:text-neon-purple transition-colors"
+                aria-label="Facebook"
+              >
+                <Facebook size={18} />
+              </a>
+              <a
+                href="#"
+                className="text-soft-white/40 hover:text-neon-purple transition-colors"
+                aria-label="Twitter"
+              >
+                <Twitter size={18} />
+              </a>
+              <a
+                href="#"
+                className="text-soft-white/40 hover:text-neon-purple transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram size={18} />
+              </a>
+              <a
+                href="#"
+                className="text-soft-white/40 hover:text-neon-purple transition-colors"
+                aria-label="YouTube"
+              >
+                <Youtube size={18} />
+              </a>
+            </div>
+
+            {/* Tablet and Mobile Menu Button */}
+            <button
+              onClick={toggleMobileMenu}
+              className="lg:hidden text-soft-white hover:text-neon-purple transition-colors p-2 rounded-lg hover:bg-white/10"
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
@@ -341,7 +350,7 @@ const Header = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="md:hidden bg-base-black/95 backdrop-blur-lg rounded-lg mt-2 p-4 border border-neon-purple/30"
+            className="md:hidden bg-base-black/95 backdrop-blur-lg rounded-xl mt-2 p-4 border border-neon-purple/30 shadow-xl"
           >
             <nav className="flex flex-col gap-4 mb-4">
               <a

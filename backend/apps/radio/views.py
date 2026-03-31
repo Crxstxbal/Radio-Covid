@@ -505,7 +505,7 @@ def api_chat_verificar_bloqueo(request, username):
     Verificar si un usuario está bloqueado del chat
     """
     try:
-        esta_bloqueado = UsuarioBloqueado.esta_bloqueado(username)
+        esta_bloqueado, _ = UsuarioBloqueado.esta_bloqueado(username)
         
         bloqueo_info = None
         if esta_bloqueado:

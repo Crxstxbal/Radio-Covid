@@ -41,7 +41,7 @@ const styles = `
 
   .rc-hero {
     text-align: center;
-    padding: 60px 32px 28px;
+    padding: 120px 32px 28px;
     position: relative;
     z-index: 5;
   }
@@ -372,7 +372,7 @@ const styles = `
     .rc-features-grid { grid-template-columns: 1fr; }
     .rc-dj-image { max-height: 150px; }
     .rc-main-grid, .rc-features-grid, .rc-cta-section { padding-left: 16px; padding-right: 16px; }
-    .rc-hero { padding: 24px 16px; }
+    .rc-hero { padding: 100px 16px 24px; }
   }
 `;
 

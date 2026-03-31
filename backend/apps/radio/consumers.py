@@ -270,7 +270,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     mensaje_texto = mensaje_texto[:500]
                 
                 # Verificar si el usuario está bloqueado
-                esta_bloqueado = await self.verificar_usuario_bloqueado(usuario)
+                esta_bloqueado, razon_bloqueo = await self.verificar_usuario_bloqueado(usuario)
                 if esta_bloqueado:
                     await self.send(text_data=json.dumps({
                         'type': 'error_chat',
@@ -286,17 +286,29 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     usuario, mensaje_texto
                 )
                 
-                # Enviar mensaje a todos los usuarios conectados
+                # Enviar confirmación al remitente con el ID real
+                await self.send(text_data=json.dumps({
+                    'type': 'mensaje_chat',
+                    'id': mensaje_guardado['id'],
+                    'temp_id': temp_id,
+                    'usuario': usuario,
+                    'mensaje': mensaje_texto,
+                    'timestamp': mensaje_guardado['timestamp'],
+                    'advertencias_usuario': advertencias
+                }))
+                
+                # Enviar mensaje a los demás usuarios conectados (sin el remitente)
                 await self.channel_layer.group_send(
                     self.room_group_name,
                     {
-                        'type': 'mensaje_chat',
+                        'type': 'mensaje_chat_broadcast',
                         'id': mensaje_guardado['id'],
-                        'temp_id': temp_id,  # Incluir el ID temporal para que el cliente lo identifique
+                        'temp_id': temp_id,
                         'usuario': usuario,
                         'mensaje': mensaje_texto,
                         'timestamp': mensaje_guardado['timestamp'],
-                        'advertencias_usuario': advertencias
+                        'advertencias_usuario': advertencias,
+                        'sender_channel_name': self.channel_name  # Excluir al remitente
                     }
                 )
                 
@@ -326,6 +338,22 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'usuario': event['usuario'],
             'mensaje': event['mensaje'],
             'timestamp': event['timestamp']
+        }))
+    
+    async def mensaje_chat_broadcast(self, event):
+        """Envía mensaje de chat a otros usuarios (excluye al remitente)"""
+        # No enviar al remitente original
+        if event.get('sender_channel_name') == self.channel_name:
+            return
+        
+        await self.send(text_data=json.dumps({
+            'type': 'mensaje_chat',
+            'id': event['id'],
+            'temp_id': event['temp_id'],
+            'usuario': event['usuario'],
+            'mensaje': event['mensaje'],
+            'timestamp': event['timestamp'],
+            'advertencias_usuario': event.get('advertencias_usuario', [])
         }))
     
     async def usuarios_conectados(self, event):
