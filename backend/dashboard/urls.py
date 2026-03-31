@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib.auth import views as auth_views
 from . import views
 from . import user_views
 
@@ -30,4 +31,7 @@ urlpatterns = [
     path('usuarios/<int:user_id>/', user_views.detalle_usuario, name='detalle_usuario'),
     path('usuarios/<int:user_id>/toggle-staff/', user_views.toggle_usuario_staff, name='toggle_usuario_staff'),
     path('usuarios/<int:user_id>/toggle-activo/', user_views.toggle_usuario_activo, name='toggle_usuario_activo'),
+    
+    # Logout
+    path('logout/', auth_views.LogoutView.as_view(next_page='dashboard_login'), name='dashboard_logout'),
 ]

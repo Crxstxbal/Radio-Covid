@@ -93,10 +93,62 @@
             text-align: center;
         }
 
+        .user-navbar {
+            background: rgba(26, 0, 51, 0.9);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 250px;
+            z-index: 1000;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--soft-white);
+            font-weight: 500;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--neon-purple) 0%, var(--neon-red) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .btn-logout {
+            background: rgba(255, 23, 68, 0.2);
+            border: 1px solid rgba(255, 23, 68, 0.5);
+            color: #FF1744;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 23, 68, 0.4);
+            color: white;
+        }
+
         .main-content {
             background: transparent;
             min-height: 100vh;
             padding: 24px;
+            padding-top: 80px;
         }
 
         .page-title {
@@ -421,6 +473,21 @@
             </nav>
 
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content fade-in">
+                <!-- Navbar superior con usuario -->
+                <div class="user-navbar">
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span>{% if user.is_authenticated %}{{ user.username }}{% else %}Invitado{% endif %}</span>
+                    </div>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard_logout' %}" class="btn-logout">
+                        <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                    </a>
+                    {% endif %}
+                </div>
+
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-3 mb-4">
                     <h1 class="page-title">{{ page_title }}</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">
