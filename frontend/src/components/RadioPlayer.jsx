@@ -69,11 +69,12 @@ const RadioPlayer = () => {
   const cargarEstacion = async () => {
     try {
       const data = await apiService.getEstacionActiva()
-      const estacionConProxy = {
+      // Usar URL directa del stream, no el proxy
+      const estacionFinal = {
         ...data,
-        stream_url: `${API_URL}/api/stream/`
+        stream_url: data.stream_url || data.url_stream // Usar URL directa
       }
-      setEstacion(estacionConProxy)
+      setEstacion(estacionFinal)
     } catch (error) {
       toast.error('Error al cargar la estación de radio')
     }
