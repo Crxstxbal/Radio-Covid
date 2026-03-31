@@ -4,9 +4,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from apps.radio.setup_views import first_time_setup
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('setup/', first_time_setup, name='first_time_setup'),
     path('api/', include([
         path('auth/', include('apps.users.urls')),
         path('', include('apps.radio.urls')),

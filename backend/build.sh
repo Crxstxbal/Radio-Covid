@@ -11,8 +11,10 @@ python manage.py collectstatic --no-input
 # Run migrations
 python manage.py migrate
 
-# Create superuser if doesn't exist (non-interactive)
-echo "from apps.users.models import User; User.objects.filter(username='admin').exists() or User.objects.create_superuser('admin', 'admin@radiocovid.com', 'admin123')" | python manage.py shell
+# Create superuser if environment variables are set
+if [ -n "$DJANGO_SUPERUSER_USERNAME" ] && [ -n "$DJANGO_SUPERUSER_PASSWORD" ]; then
+    echo "from apps.users.models import User; User.objects.filter(username='$DJANGO_SUPERUSER_USERNAME').exists() or User.objects.create_superuser('$DJANGO_SUPERUSER_USERNAME', '$DJANGO_SUPERUSER_EMAIL', '$DJANGO_SUPERUSER_PASSWORD')" | python manage.py shell
+fi
 
 # Create default radio station if doesn't exist
 echo "
