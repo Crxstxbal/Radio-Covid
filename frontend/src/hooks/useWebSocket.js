@@ -10,7 +10,12 @@ export const useWebSocket = (url) => {
   const maxReconnectAttempts = 5
 
   const connect = () => {
-    const wsUrl = `${import.meta.env.VITE_WS_URL || 'ws://localhost:8000'}${url}`
+    // Usar API_URL como base para WebSocket, reemplazando http con ws
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+    const wsBase = apiUrl.replace('https://', 'wss://').replace('http://', 'ws://')
+    const wsUrl = `${wsBase}${url}`
+    
+    console.log('Connecting to WebSocket:', wsUrl)
     
     try {
       ws.current = new WebSocket(wsUrl)
