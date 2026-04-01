@@ -269,11 +269,59 @@ def streaming_proxy(request):
         
         return streaming_response
         
+    except requests.exceptions.RequestException as e:
+        print(f"[STREAMING] Error de conexión: {str(e)}")
+        return HttpResponse(f"Error de conexión al servidor de streaming: {str(e)}", status=502)
     except Exception as e:
+        print(f"[STREAMING] Error inesperado: {str(e)}")
+        import traceback
+        traceback.print_exc()
         return HttpResponse(f"Error en el proxy de streaming: {str(e)}", status=500)
 
 
-# ─── API para Chat en Vivo ─────────────────────────────────────────────────
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def api_streaming_status(request):
+    """Endpoint de debug para verificar el estado del streaming"""
+    try:
+        estacion = EstacionRadio.get_activa()
+        if not estacion:
+            return Response({
+                'success': False,
+                'error': 'No hay estación activa'
+            }, status=404)
+        
+        # Probar conexión al servidor de streaming
+        import requests
+        test_response = requests.head(
+            estacion.stream_url,
+            headers={
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                'Accept': 'audio/mpeg',
+            },
+            timeout=10,
+            allow_redirects=True
+        )
+        
+        return Response({
+            'success': True,
+            'estacion': {
+                'id': estacion.id,
+                'nombre': estacion.nombre,
+                'stream_url': estacion.stream_url,
+                'activa': estacion.activa
+            },
+            'test_conexion': {
+                'status_code': test_response.status_code,
+                'headers': dict(test_response.headers),
+                'accessible': test_response.status_code == 200
+            }
+        })
+    except Exception as e:
+        return Response({
+            'success': False,
+            'error': str(e)
+        }, status=500)
 
 @api_view(['GET', 'POST'])
 @permission_classes([AllowAny])

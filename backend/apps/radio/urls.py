@@ -2,7 +2,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import (
     EstacionRadioViewSet, OyenteActivoViewSet, EstadisticaRadioViewSet,
-    streaming_proxy, api_chat_mensajes, api_chat_usuarios_online,
+    streaming_proxy, api_streaming_status, api_chat_mensajes, api_chat_usuarios_online,
     api_chat_eliminar_mensaje, api_chat_bloquear_usuario, api_chat_desbloquear_usuario,
     api_chat_advertir_usuario, api_chat_verificar_bloqueo, api_chat_lista_bloqueados,
     api_chat_advertencias_usuario
@@ -17,6 +17,7 @@ urlpatterns = [
     path('', include(router.urls)),
     path('stream/', streaming_proxy, name='streaming_proxy'),
     path('streaming/proxy/', streaming_proxy, name='streaming_proxy_alt'),
+    path('streaming/status/', api_streaming_status, name='streaming_status'),
     # Chat en vivo
     path('chat/mensajes/', api_chat_mensajes, name='chat_mensajes'),
     path('chat/mensajes/<int:mensaje_id>/', api_chat_eliminar_mensaje, name='chat_eliminar_mensaje'),
