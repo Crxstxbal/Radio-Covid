@@ -26,14 +26,16 @@ export const useWebSocket = (url) => {
         setIsConnected(true)
         reconnectAttempts.current = 0
         
-        // Enviar nombre de usuario al conectar
+        // Enviar nombre de usuario y tab_id al conectar
         const userData = localStorage.getItem('user_data')
+        const tabId = sessionStorage.getItem('tab_id')
         if (userData) {
           try {
             const user = JSON.parse(userData)
             ws.current.send(JSON.stringify({ 
               type: 'identificar',
-              usuario: user.username 
+              usuario: user.username,
+              tab_id: tabId
             }))
           } catch (e) {
             console.log('No user data available')

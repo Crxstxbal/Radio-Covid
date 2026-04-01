@@ -74,7 +74,7 @@ def ver_oyentes(request):
         'cache_bust': timezone.now().timestamp(),  # Force no cache
     }
     
-    return render(request, 'dashboard/oyentes_v2.html', context)
+    return render(request, 'dashboard/oyentes.html', context)
 
 
 @staff_member_required
@@ -144,6 +144,10 @@ def eliminar_mensaje(request, mensaje_id):
     except MensajeChat.DoesNotExist:
         messages.error(request, 'Mensaje no encontrado.')
     
+    # Redirigir según de dónde vino la petición
+    referer = request.META.get('HTTP_REFERER', '')
+    if 'chat/moderacion' in referer or 'chat/' in referer:
+        return redirect('dashboard:chat_moderacion')
     return redirect('dashboard:ver_chat')
 
 
@@ -194,25 +198,6 @@ def desbanear_usuario(request, username):
 
 
 @staff_member_required
-def eliminar_mensaje(request, mensaje_id):
-    """Eliminar un mensaje específico del chat"""
-    from apps.radio.models import MensajeChat
-    
-    mensaje = get_object_or_404(MensajeChat, id=mensaje_id)
-    usuario = mensaje.usuario
-    contenido = mensaje.contenido[:50] + "..." if len(mensaje.contenido) > 50 else mensaje.contenido
-    
-    # Eliminar mensaje
-    mensaje.delete()
-    messages.success(request, f'Mensaje eliminado exitosamente.')
-    
-    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
-        return JsonResponse({'success': True, 'message': 'Mensaje eliminado'})
-    
-    return redirect('dashboard:chat_moderacion')
-
-
-@staff_member_required
 def advertir_usuario(request, username):
     """Enviar advertencia a un usuario"""
     from apps.radio.models import AdvertenciaChat
@@ -241,12 +226,12 @@ def chat_moderacion(request):
     
     # Obtener mensajes recientes (últimas 24 horas)
     mensajes_recientes = MensajeChat.objects.filter(
-        fecha__gte=timezone.now() - timezone.timedelta(days=1)
-    ).order_by('-fecha')[:100]
+        fecha_envio__gte=timezone.now() - timezone.timedelta(days=1)
+    ).order_by('-fecha_envio')[:100]
     
     # Estadísticas
     total_mensajes_hoy = MensajeChat.objects.filter(
-        fecha__gte=timezone.now() - timezone.timedelta(days=1)
+        fecha_envio__gte=timezone.now() - timezone.timedelta(days=1)
     ).count()
     
     usuarios_bloqueados_activos = UsuarioBloqueado.objects.filter(activo=True).count()
@@ -254,14 +239,11 @@ def chat_moderacion(request):
         fecha_advertencia__gte=timezone.now() - timezone.timedelta(days=1)
     ).count()
     
-    # Acciones de moderación recientes - deshabilitado (modelo no existe)
-    
     context = {
         'mensajes_recientes': mensajes_recientes,
         'total_mensajes_hoy': total_mensajes_hoy,
         'usuarios_bloqueados_activos': usuarios_bloqueados_activos,
         'advertencias_hoy': advertencias_hoy,
-        'acciones_recientes': acciones_recientes,
         'page_title': 'Moderación del Chat'
     }
     
@@ -279,169 +261,6 @@ def chat_bloqueados(request):
     context = {
         'usuarios_bloqueados': usuarios_bloqueados,
         'historial_bloqueos': historial_bloqueos,
-        'page_title': 'Usuarios Bloqueados'
-    }
-    
-    return render(request, 'dashboard/chat_bloqueados.html', context)
-
-
-@staff_member_required
-def chat_historial(request):
-    """Historial completo de moderación del chat"""
-    from apps.radio.models import MensajeChat
-    
-    # Filtros
-    tipo_filtro = request.GET.get('tipo', '')
-    usuario_filtro = request.GET.get('usuario', '')
-    fecha_desde = request.GET.get('fecha_desde', '')
-    fecha_hasta = request.GET.get('fecha_hasta', '')
-    
-    # Nota: Historial de moderación deshabilitado (modelo no existe)
-    acciones = []
-    
-    if tipo_filtro:
-        acciones = acciones.filter(tipo_accion=tipo_filtro)
-    if usuario_filtro:
-        acciones = acciones.filter(usuario_afectado__icontains=usuario_filtro)
-    if fecha_desde:
-        acciones = acciones.filter(fecha_accion__gte=fecha_desde)
-    if fecha_hasta:
-        acciones = acciones.filter(fecha_accion__lte=fecha_hasta)
-    
-    # Estadísticas deshabilitadas (modelo no existe)
-    total_bloqueos = 0
-    total_desbloqueos = 0
-    total_advertencias = 0
-    total_eliminaciones = 0
-    
-    context = {
-        'acciones': acciones[:100],
-        'total_bloqueos': total_bloqueos,
-        'total_desbloqueos': total_desbloqueos,
-        'total_advertencias': total_advertencias,
-        'total_eliminaciones': total_eliminaciones,
-        'filtros': {
-            'tipo': tipo_filtro,
-            'usuario': usuario_filtro,
-            'fecha_desde': fecha_desde,
-            'fecha_hasta': fecha_hasta,
-        },
-        'page_title': 'Historial de Moderación'
-    }
-    
-    return render(request, 'dashboard/chat_historial.html', context)
-
-
-@staff_member_required
-def ver_usuarios(request):
-    """Ver lista de usuarios registrados"""
-    usuarios = User.objects.all().order_by('-date_joined')
-    
-    # Estadísticas
-    total_usuarios = usuarios.count()
-    usuarios_activos_mes = User.objects.filter(
-        date_joined__gte=timezone.now() - timezone.timedelta(days=30)
-    ).count()
-    usuarios_staff = User.objects.filter(is_staff=True).count()
-    
-    context = {
-        'usuarios': usuarios,
-        'total_usuarios': total_usuarios,
-        'usuarios_activos_mes': usuarios_activos_mes,
-        'usuarios_staff': usuarios_staff,
-        'page_title': 'Gestión de Usuarios'
-    }
-    
-    return render(request, 'dashboard/usuarios.html', context)
-
-
-@staff_member_required
-def detalle_usuario(request, user_id):
-    """Ver detalles de un usuario específico"""
-    usuario = get_object_or_404(User, id=user_id)
-    
-    # Estadísticas del usuario
-    conexiones_usuario = OyenteActivo.objects.filter(
-        ip_address__contains=usuario.email.split('@')[0]  # Búsqueda aproximada
-    ).count()
-    
-    context = {
-        'usuario': usuario,
-        'conexiones_usuario': conexiones_usuario,
-        'page_title': f'Detalles de {usuario.username}'
-    }
-    
-    return render(request, 'dashboard/detalle_usuario.html', context)
-
-
-@staff_member_required
-def toggle_usuario_staff(request, user_id):
-    """Activar/desactivar permisos de staff"""
-    if request.method == 'POST':
-        usuario = get_object_or_404(User, id=user_id)
-        usuario.is_staff = not usuario.is_staff
-        usuario.save()
-        
-        estado = 'activados' if usuario.is_staff else 'desactivados'
-        messages.success(request, f'Permisos de staff {estado} para {usuario.username}')
-    
-    return redirect('dashboard:ver_usuarios')
-
-
-@staff_member_required
-def toggle_usuario_activo(request, user_id):
-    """Activar/desactivar usuario"""
-    if request.method == 'POST':
-        usuario = get_object_or_404(User, id=user_id)
-        usuario.is_active = not usuario.is_active
-        usuario.save()
-        
-        estado = 'activado' if usuario.is_active else 'desactivado'
-        messages.success(request, f'Usuario {usuario.username} {estado}')
-    
-    return redirect('dashboard:ver_usuarios')
-
-
-# ─── Vistas de Moderación de Chat ─────────────────────────────────────────
-
-@staff_member_required
-def chat_moderacion(request):
-    """Panel de moderación del chat en vivo"""
-    # Obtener mensajes recientes
-    mensajes_recientes = MensajeChat.objects.all().order_by('-fecha_envio')[:50]
-    
-    # Obtener usuarios bloqueados activos
-    usuarios_bloqueados = UsuarioBloqueado.objects.filter(activo=True).order_by('-fecha_bloqueo')
-    
-    # Obtener advertencias recientes
-    advertencias_recientes = AdvertenciaChat.objects.all().order_by('-fecha_advertencia')[:20]
-    
-    # Estadísticas
-    total_bloqueados = UsuarioBloqueado.objects.filter(activo=True).count()
-    total_advertencias_hoy = AdvertenciaChat.objects.filter(
-        fecha_advertencia__date=timezone.now().date()
-    ).count()
-    
-    context = {
-        'mensajes_recientes': mensajes_recientes,
-        'usuarios_bloqueados': usuarios_bloqueados,
-        'advertencias_recientes': advertencias_recientes,
-        'total_bloqueados': total_bloqueados,
-        'total_advertencias_hoy': total_advertencias_hoy,
-        'page_title': 'Moderación de Chat'
-    }
-    
-    return render(request, 'dashboard/chat_moderacion.html', context)
-
-
-@staff_member_required
-def chat_bloqueados(request):
-    """Ver y gestionar usuarios bloqueados del chat"""
-    bloqueados = UsuarioBloqueado.objects.filter(activo=True).order_by('-fecha_bloqueo')
-    
-    context = {
-        'bloqueados': bloqueados,
-        'total_bloqueados_activos': bloqueados.filter(activo=True).count(),
         'page_title': 'Usuarios Bloqueados'
     }
     

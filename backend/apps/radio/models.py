@@ -44,7 +44,7 @@ class OyenteActivo(models.Model):
         return f"{self.usuario or 'Anónimo'} - {self.fecha_conexion}"
 
     @classmethod
-    def limpiar_inactivos(cls, minutos=5):
+    def limpiar_inactivos(cls, minutos=10):
         """Limpiar oyentes inactivos por más de X minutos"""
         limite = timezone.now() - timezone.timedelta(minutes=minutos)
         cls.objects.filter(ultima_actividad__lt=limite).delete()

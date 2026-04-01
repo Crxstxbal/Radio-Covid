@@ -50,7 +50,7 @@
                                     {% endif %}
                                 </small>
                             </div>
-                            <form action="{% url 'dashboard:desbanear_usuario' usuario.username %}" method="POST" class="d-inline">
+                            <form action="{% url 'dashboard:desbloquear_usuario' usuario.username %}" method="POST" class="d-inline">
                                 {% csrf_token %}
                                 <button type="submit" class="btn btn-sm btn-success" onclick="return confirm('¿Desbloquear a {{ usuario.username }}?')">
                                     <i class="fas fa-unlock me-1"></i>Desbloquear

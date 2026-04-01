@@ -8,12 +8,13 @@ from .models import OyenteActivo, EstadisticaRadio, MensajeChat, UsuarioBloquead
 class RadioConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         """Manejar conexión WebSocket"""
-        self.session_key = self.scope['session'].session_key or self.generate_session_key()
+        # El tab_id se recibirá más tarde del cliente, por ahora usar IP
+        self.tab_id = None
         
         # Aceptar conexión
         await self.accept()
         
-        # Registrar oyente
+        # Registrar oyente inicialmente con IP (se actualizará cuando reciba tab_id)
         await self.registrar_oyente()
         
         # Unirse al grupo de radio
@@ -56,9 +57,16 @@ class RadioConsumer(AsyncWebsocketConsumer):
                 await self.actualizar_actividad()
                 await self.enviar_conteo_actual()
             elif message_type == 'identificar':
-                # Guardar nombre de usuario
+                # Recibir tab_id y nombre de usuario
                 usuario = data.get('usuario')
-                if usuario:
+                tab_id = data.get('tab_id')
+                
+                if tab_id:
+                    self.tab_id = tab_id
+                    print(f"Tab ID recibido: {tab_id}")
+                    # Migrar oyente de IP a tab_id
+                    await self.migrar_oyente_a_tab_id(tab_id, usuario)
+                elif usuario:
                     await self.actualizar_usuario(usuario)
                     print(f"Usuario identificado: {usuario}")
                 
@@ -66,15 +74,63 @@ class RadioConsumer(AsyncWebsocketConsumer):
             pass
 
     @database_sync_to_async
-    def actualizar_usuario(self, usuario):
-        """Actualizar el nombre de usuario del oyente"""
+    def migrar_oyente_a_tab_id(self, tab_id, usuario=None):
+        """Migrar oyente de IP a tab_id cuando se recibe"""
         try:
-            oyente = OyenteActivo.objects.get(session_key=self.session_key)
+            ip_address = self.get_client_ip()
+            old_session_key = f"ip_{ip_address}"
+            
+            # Primero verificar si ya existe un oyente con este tab_id
+            try:
+                existing = OyenteActivo.objects.get(session_key=tab_id)
+                # Ya existe, solo actualizar usuario si es necesario
+                if usuario and usuario != existing.usuario:
+                    existing.usuario = usuario
+                    existing.save(update_fields=['usuario'])
+                print(f"Oyente con tab_id {tab_id} ya existe, actualizado")
+                return
+            except OyenteActivo.DoesNotExist:
+                pass
+            
+            # Buscar oyente por IP y migrar
+            try:
+                oyente = OyenteActivo.objects.get(session_key=old_session_key)
+                # Actualizar a usar tab_id
+                oyente.session_key = tab_id
+                if usuario:
+                    oyente.usuario = usuario
+                oyente.save()
+                print(f"Oyente migrado de {old_session_key} a {tab_id}")
+            except OyenteActivo.DoesNotExist:
+                # No existe, crear nuevo con tab_id
+                OyenteActivo.objects.create(
+                    session_key=tab_id,
+                    ip_address=ip_address,
+                    usuario=usuario or 'Anónimo',
+                    esta_escuchando=True
+                )
+                print(f"Nuevo oyente creado con tab_id: {tab_id}")
+        except Exception as e:
+            print(f"Error migrando oyente: {e}")
+
+    @database_sync_to_async
+    def actualizar_usuario(self, usuario):
+        """Actualizar el nombre de usuario del oyente - usa tab_id si está disponible"""
+        try:
+            ip_address = self.get_client_ip()
+            
+            # Usar tab_id si está disponible, sino IP
+            if self.tab_id:
+                session_key = self.tab_id
+            else:
+                session_key = f"ip_{ip_address}"
+            
+            oyente = OyenteActivo.objects.get(session_key=session_key)
             oyente.usuario = usuario
             oyente.save(update_fields=['usuario'])
-            print(f"Usuario {usuario} guardado para session {self.session_key}")
+            print(f"Usuario {usuario} guardado para session {session_key}")
         except OyenteActivo.DoesNotExist:
-            print(f"No se encontró oyente con session_key {self.session_key}")
+            print(f"No se encontró oyente con session_key {session_key}")
             pass
 
     async def actualizar_conteo(self, event):
@@ -86,45 +142,65 @@ class RadioConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def registrar_oyente(self):
-        """Registrar nuevo oyente en la base de datos"""
+        """Registrar nuevo oyente en la base de datos - usa tab_id si está disponible"""
         ip_address = self.get_client_ip()
         
-        # Headers es una lista de tuplas en ASGI: [(b'name', b'value'), ...]
+        # Usar tab_id si está disponible, sino IP
+        if self.tab_id:
+            session_key = self.tab_id
+        else:
+            session_key = f"ip_{ip_address}"
+        
+        # Headers es una lista de tuplas en ASGI
         headers_list = self.scope.get('headers', [])
         headers = {}
         for name, value in headers_list:
             headers[name.lower()] = value
         
-        user_agent = headers.get(b'user-agent', b'').decode('utf-8')
+        user_agent = headers.get(b'user-agent', b'').decode('utf-8')[:100]
         
         # Obtener usuario autenticado si existe
         usuario = None
         if 'user' in self.scope and self.scope['user'] and not self.scope['user'].is_anonymous:
             usuario = self.scope['user'].username
         
-        oyente, created = OyenteActivo.objects.get_or_create(
-            session_key=self.session_key,
-            defaults={
-                'ip_address': ip_address,
-                'user_agent': user_agent,
-                'usuario': usuario,
-                'esta_escuchando': True
-            }
-        )
-        
-        if not created:
+        try:
+            # Intentar obtener existente
+            oyente = OyenteActivo.objects.get(session_key=session_key)
+            # Actualizar existente
             oyente.ultima_actividad = timezone.now()
             oyente.esta_escuchando = True
+            oyente.user_agent = user_agent
+            oyente.ip_address = ip_address
+            if usuario:
+                oyente.usuario = usuario
             oyente.save()
+        except OyenteActivo.DoesNotExist:
+            # Crear nuevo
+            OyenteActivo.objects.create(
+                session_key=session_key,
+                ip_address=ip_address,
+                user_agent=user_agent,
+                usuario=usuario or 'Anónimo',
+                esta_escuchando=True
+            )
         
         # Actualizar estadísticas
         self.actualizar_estadisticas()
 
     @database_sync_to_async
     def desregistrar_oyente(self):
-        """Marcar oyente como desconectado"""
+        """Marcar oyente como desconectado - usa tab_id si está disponible"""
+        ip_address = self.get_client_ip()
+        
+        # Usar tab_id si está disponible, sino IP
+        if self.tab_id:
+            session_key = self.tab_id
+        else:
+            session_key = f"ip_{ip_address}"
+        
         try:
-            oyente = OyenteActivo.objects.get(session_key=self.session_key)
+            oyente = OyenteActivo.objects.get(session_key=session_key)
             oyente.esta_escuchando = False
             oyente.save()
         except OyenteActivo.DoesNotExist:
@@ -132,9 +208,17 @@ class RadioConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def actualizar_actividad(self):
-        """Actualizar actividad del oyente"""
+        """Actualizar actividad del oyente - usa tab_id si está disponible"""
+        ip_address = self.get_client_ip()
+        
+        # Usar tab_id si está disponible, sino IP
+        if self.tab_id:
+            session_key = self.tab_id
+        else:
+            session_key = f"ip_{ip_address}"
+        
         try:
-            oyente = OyenteActivo.objects.get(session_key=self.session_key)
+            oyente = OyenteActivo.objects.get(session_key=session_key)
             oyente.ultima_actividad = timezone.now()
             oyente.esta_escuchando = True
             oyente.save()

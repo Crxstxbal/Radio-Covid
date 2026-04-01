@@ -1,176 +1,267 @@
 {% extends 'dashboard/base.html' %}
 
-{% block title %}Gestión de Usuarios{% endblock %}
+{% block title %}Gestión de Usuarios - Radio Admin{% endblock %}
 
 {% block content %}
-<div class="row">
-    <!-- Estadísticas de Usuarios -->
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card stat-card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col">
-                        <h5 class="card-title text-uppercase text-white-50 mb-0">Total Usuarios</h5>
-                        <span class="h2 font-weight-bold mb-0 text-white">{{ total_usuarios }}</span>
+<div class="container-fluid">
+    <!-- Estadísticas -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card glass-card stat-card-custom h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="stat-icon me-3">
+                        <i class="fas fa-users"></i>
                     </div>
-                    <div class="col-auto">
-                        <i class="fas fa-users fa-2x text-white-50"></i>
+                    <div>
+                        <h6 class="text-muted-custom text-uppercase mb-1" style="font-size: 0.75rem; letter-spacing: 1px;">Total Usuarios</h6>
+                        <h3 class="mb-0 text-white fw-bold">{{ total_usuarios }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card glass-card stat-card-custom h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="stat-icon me-3" style="background: rgba(0, 230, 118, 0.15);">
+                        <i class="fas fa-user-plus" style="color: #00E676;"></i>
+                    </div>
+                    <div>
+                        <h6 class="text-muted-custom text-uppercase mb-1" style="font-size: 0.75rem; letter-spacing: 1px;">Último Mes</h6>
+                        <h3 class="mb-0 fw-bold" style="color: #00E676;">{{ usuarios_activos_mes }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card glass-card stat-card-custom h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="stat-icon me-3" style="background: rgba(255, 23, 68, 0.15);">
+                        <i class="fas fa-shield-alt" style="color: #FF1744;"></i>
+                    </div>
+                    <div>
+                        <h6 class="text-muted-custom text-uppercase mb-1" style="font-size: 0.75rem; letter-spacing: 1px;">Staff</h6>
+                        <h3 class="mb-0 fw-bold" style="color: #FF1744;">{{ usuarios_staff }}</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card glass-card stat-card-custom h-100">
+                <div class="card-body d-flex align-items-center">
+                    <div class="stat-icon me-3" style="background: rgba(170, 0, 255, 0.15);">
+                        <i class="fas fa-check-circle" style="color: #AA00FF;"></i>
+                    </div>
+                    <div>
+                        <h6 class="text-muted-custom text-uppercase mb-1" style="font-size: 0.75rem; letter-spacing: 1px;">Activos</h6>
+                        <h3 class="mb-0 fw-bold" style="color: #AA00FF;">{{ usuarios_activos }}</h3>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card stat-card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col">
-                        <h5 class="card-title text-uppercase text-white-50 mb-0">Último Mes</h5>
-                        <span class="h2 font-weight-bold mb-0 text-white">{{ usuarios_activos_mes }}</span>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-user-plus fa-2x text-white-50"></i>
-                    </div>
-                </div>
-            </div>
+    <!-- Tabla de Usuarios -->
+    <div class="glass-card">
+        <div class="glass-card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0 text-white fw-bold">
+                <i class="fas fa-list me-2"></i>Lista de Usuarios Registrados
+            </h5>
         </div>
-    </div>
-
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card stat-card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col">
-                        <h5 class="card-title text-uppercase text-white-50 mb-0">Staff</h5>
-                        <span class="h2 font-weight-bold mb-0 text-white">{{ usuarios_staff }}</span>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-user-shield fa-2x text-white-50"></i>
-                    </div>
-                </div>
+        <div class="p-4">
+            {% if usuarios %}
+            <div class="table-responsive">
+                <table class="table table-custom">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Email</th>
+                            <th>Nombre</th>
+                            <th>Fecha Registro</th>
+                            <th>Estado</th>
+                            <th>Staff</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for usuario in usuarios %}
+                        <tr>
+                            <td>
+                                <strong class="text-white">{{ usuario.username }}</strong>
+                            </td>
+                            <td class="text-white-50">{{ usuario.email }}</td>
+                            <td>
+                                {% if usuario.first_name or usuario.last_name %}
+                                    <span class="text-white">{{ usuario.first_name }} {{ usuario.last_name }}</span>
+                                {% else %}
+                                    <span class="text-muted-custom">-</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-white-50">{{ usuario.date_joined|date:"d/m/Y H:i" }}</td>
+                            <td>
+                                {% if usuario.is_active %}
+                                    <span class="badge bg-glass-success">Activo</span>
+                                {% else %}
+                                    <span class="badge bg-glass-danger">Inactivo</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if usuario.is_staff %}
+                                    <span class="badge bg-glass-primary">Staff</span>
+                                {% else %}
+                                    <span class="text-muted-custom">Usuario</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="btn-group-custom">
+                                    <a href="{% url 'dashboard:detalle_usuario' usuario.id %}" class="btn btn-action btn-view" title="Ver detalles">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <form method="post" action="{% url 'dashboard:toggle_usuario_staff' usuario.id %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-action {% if usuario.is_staff %}btn-staff-remove{% else %}btn-staff-add{% endif %}" title="{% if usuario.is_staff %}Quitar Staff{% else %}Hacer Staff{% endif %}">
+                                            <i class="fas fa-user-shield"></i>
+                                        </button>
+                                    </form>
+                                    <form method="post" action="{% url 'dashboard:toggle_usuario_activo' usuario.id %}" class="d-inline">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-action {% if usuario.is_active %}btn-deactivate{% else %}btn-activate{% endif %}" title="{% if usuario.is_active %}Desactivar{% else %}Activar{% endif %}">
+                                            <i class="fas fa-power-off"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-        </div>
-    </div>
-
-    <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card stat-card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col">
-                        <h5 class="card-title text-uppercase text-white-50 mb-0">Activos</h5>
-                        <span class="h2 font-weight-bold mb-0 text-white">
-                            {{ usuarios_activos }}
-                        </span>
-                    </div>
-                    <div class="col-auto">
-                        <i class="fas fa-user-check fa-2x text-white-50"></i>
-                    </div>
-                </div>
+            {% else %}
+            <div class="empty-state text-center py-5">
+                <i class="fas fa-users-slash fa-3x mb-3"></i>
+                <h5 class="text-white">No hay usuarios registrados</h5>
+                <p class="text-muted-custom">Los usuarios aparecerán aquí cuando se registren en la plataforma.</p>
             </div>
+            {% endif %}
         </div>
     </div>
 </div>
 
-<!-- Lista de Usuarios -->
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header">
-                <h6 class="m-0 font-weight-bold text-primary">
-                    <i class="fas fa-users me-2"></i>Lista de Usuarios Registrados
-                </h6>
-            </div>
-            <div class="card-body">
-                {% if usuarios %}
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Usuario</th>
-                                    <th>Email</th>
-                                    <th>Fecha Registro</th>
-                                    <th>Estado</th>
-                                    <th>Staff</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for usuario in usuarios %}
-                                <tr>
-                                    <td>
-                                        <div class="d-flex align-items-center">
-                                            {% if usuario.avatar %}
-                                                <img src="{{ usuario.avatar.url }}" alt="{{ usuario.username }}" 
-                                                     class="rounded-circle me-2" style="width: 30px; height: 30px; object-fit: cover;">
-                                            {% else %}
-                                                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-2" 
-                                                     style="width: 30px; height: 30px;">
-                                                    <i class="fas fa-user text-white"></i>
-                                                </div>
-                                            {% endif %}
-                                            <div>
-                                                <strong>{{ usuario.username }}</strong>
-                                                {% if usuario.first_name %}
-                                                    <br><small class="text-muted">{{ usuario.first_name }} {{ usuario.last_name }}</small>
-                                                {% endif %}
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>{{ usuario.email }}</td>
-                                    <td>{{ usuario.date_joined|date:"d/m/Y H:i" }}</td>
-                                    <td>
-                                        <span class="badge bg-{{ usuario.is_active|yesno:'success,secondary' }}">
-                                            {{ usuario.is_active|yesno:"Activo,Inactivo" }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-{{ usuario.is_staff|yesno:'warning,secondary' }}">
-                                            {{ usuario.is_staff|yesno:"Staff,Usuario" }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <div class="btn-group" role="group">
-                                            <a href="{% url 'dashboard:detalle_usuario' usuario.id %}" 
-                                               class="btn btn-sm btn-outline-primary">
-                                                <i class="fas fa-eye"></i>
-                                            </a>
-                                            
-                                            <form method="post" action="{% url 'dashboard:toggle_usuario_staff' usuario.id %}" 
-                                                  class="d-inline" style="display: inline;">
-                                                {% csrf_token %}
-                                                <button type="submit" 
-                                                        class="btn btn-sm btn-{{ usuario.is_staff|yesno:'warning,success' }}">
-                                                    <i class="fas fa-user-shield"></i>
-                                                    {{ usuario.is_staff|yesno:"Quitar Staff,Hacer Staff" }}
-                                                </button>
-                                            </form>
-                                            
-                                            <form method="post" action="{% url 'dashboard:toggle_usuario_activo' usuario.id %}" 
-                                                  class="d-inline" style="display: inline;">
-                                                {% csrf_token %}
-                                                <button type="submit" 
-                                                        class="btn btn-sm btn-{{ usuario.is_active|yesno:'danger,success' }}">
-                                                    <i class="fas fa-{{ usuario.is_active|yesno:'ban,check' }}"></i>
-                                                    {{ usuario.is_active|yesno:"Desactivar,Activar" }}
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                {% else %}
-                    <div class="text-center py-4">
-                        <i class="fas fa-users fa-3x text-muted mb-3"></i>
-                        <h5>No hay usuarios registrados</h5>
-                        <p class="text-muted">No se encontraron usuarios en el sistema.</p>
-                    </div>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-</div>
+<style>
+    .stat-card-custom {
+        transition: all 0.3s ease;
+    }
+    .stat-card-custom:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 12px 40px rgba(170, 0, 255, 0.2);
+    }
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        background: rgba(170, 0, 255, 0.15);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        color: var(--neon-purple);
+    }
+    .table-custom {
+        --bs-table-bg: transparent;
+        --bs-table-color: var(--soft-white);
+        --bs-table-border-color: rgba(170, 0, 255, 0.2);
+        margin-bottom: 0;
+    }
+    .table-custom thead th {
+        background: rgba(170, 0, 255, 0.2);
+        border-bottom: 2px solid rgba(170, 0, 255, 0.3);
+        color: var(--soft-white);
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+        padding: 12px 16px;
+    }
+    .table-custom tbody tr {
+        border-bottom: 1px solid rgba(170, 0, 255, 0.1);
+        transition: all 0.2s ease;
+    }
+    .table-custom tbody tr:hover {
+        background: rgba(170, 0, 255, 0.1);
+    }
+    .table-custom td {
+        padding: 16px;
+        vertical-align: middle;
+    }
+    .btn-group-custom {
+        display: flex;
+        gap: 8px;
+    }
+    .btn-action {
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        border: 1px solid;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        background: transparent;
+        padding: 0;
+    }
+    .btn-view {
+        border-color: rgba(170, 0, 255, 0.5);
+        color: var(--neon-purple);
+    }
+    .btn-view:hover {
+        background: rgba(170, 0, 255, 0.2);
+        color: white;
+    }
+    .btn-staff-add {
+        border-color: rgba(0, 230, 118, 0.5);
+        color: #00E676;
+    }
+    .btn-staff-add:hover {
+        background: rgba(0, 230, 118, 0.2);
+        color: white;
+    }
+    .btn-staff-remove {
+        border-color: rgba(255, 193, 7, 0.5);
+        color: #FFC107;
+    }
+    .btn-staff-remove:hover {
+        background: rgba(255, 193, 7, 0.2);
+        color: white;
+    }
+    .btn-activate {
+        border-color: rgba(0, 230, 118, 0.5);
+        color: #00E676;
+    }
+    .btn-activate:hover {
+        background: rgba(0, 230, 118, 0.2);
+        color: white;
+    }
+    .btn-deactivate {
+        border-color: rgba(255, 23, 68, 0.5);
+        color: #FF1744;
+    }
+    .btn-deactivate:hover {
+        background: rgba(255, 23, 68, 0.2);
+        color: white;
+    }
+    .badge.bg-glass-primary {
+        background: rgba(170, 0, 255, 0.3);
+        border: 1px solid rgba(170, 0, 255, 0.5);
+        color: #E0B0FF;
+    }
+    .badge.bg-glass-success {
+        background: rgba(0, 230, 118, 0.2);
+        border: 1px solid rgba(0, 230, 118, 0.4);
+        color: #00E676;
+    }
+    .badge.bg-glass-danger {
+        background: rgba(255, 23, 68, 0.2);
+        border: 1px solid rgba(255, 23, 68, 0.4);
+        color: #FF1744;
+    }
+</style>
 {% endblock %}

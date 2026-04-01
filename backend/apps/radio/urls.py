@@ -16,6 +16,7 @@ router.register(r'estadisticas', EstadisticaRadioViewSet, basename='estadisticas
 urlpatterns = [
     path('', include(router.urls)),
     path('stream/', streaming_proxy, name='streaming_proxy'),
+    path('streaming/proxy/', streaming_proxy, name='streaming_proxy_alt'),
     # Chat en vivo
     path('chat/mensajes/', api_chat_mensajes, name='chat_mensajes'),
     path('chat/mensajes/<int:mensaje_id>/', api_chat_eliminar_mensaje, name='chat_eliminar_mensaje'),

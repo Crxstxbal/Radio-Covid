@@ -2,22 +2,38 @@ import axios from 'axios'
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
+// Generar o recuperar ID único para esta pestaña (sessionStorage = no se comparte entre pestañas)
+const getTabId = () => {
+  let tabId = sessionStorage.getItem('tab_id')
+  if (!tabId) {
+    tabId = 'tab_' + Math.random().toString(36).substring(2, 15) + '_' + Date.now()
+    sessionStorage.setItem('tab_id', tabId)
+  }
+  return tabId
+}
+
+const TAB_ID = getTabId()
+console.log('Tab ID:', TAB_ID)
+
 // Crear instancia de axios con configuración base
 const api = axios.create({
   baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true, // Para cookies de sesión
+  withCredentials: true,
 })
 
-// Interceptor para manejar errores
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    console.error('API Error:', error)
-    return Promise.reject(error)
-  }
+// Interceptor para agregar tab_id a todas las requests POST
+api.interceptors.request.use(
+  (config) => {
+    if (config.method === 'post' || config.method === 'POST') {
+      config.data = config.data || {}
+      config.data.tab_id = TAB_ID
+    }
+    return config
+  },
+  (error) => Promise.reject(error)
 )
 
 export const apiService = {
@@ -37,9 +53,9 @@ export const apiService = {
   },
 
   // Oyentes
-  async registrarConexion() {
+  async registrarConexion(usuario = '') {
     try {
-      const response = await api.post('/api/oyentes/registrar_conexion/')
+      const response = await api.post('/api/oyentes/registrar_conexion/', { usuario })
       return response.data
     } catch (error) {
       console.error('Error al registrar conexión:', error)

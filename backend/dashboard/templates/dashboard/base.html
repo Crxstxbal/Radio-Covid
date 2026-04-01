@@ -144,6 +144,50 @@
             color: white;
         }
 
+        .user-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(26, 0, 51, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1030;
+        }
+
+        .navbar-brand-mobile {
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--neon-red), var(--neon-orange), var(--neon-yellow));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            color: var(--soft-white);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            background: linear-gradient(135deg, var(--neon-red) 0%, var(--neon-orange) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
         .main-content {
             background: transparent;
             min-height: 100vh;
@@ -388,13 +432,53 @@
 
         @media (max-width: 768px) {
             .sidebar {
+                position: fixed;
+                top: 60px;
+                left: -280px;
+                width: 280px;
+                height: calc(100vh - 60px);
+                z-index: 1020;
+                transition: left 0.3s ease;
                 min-height: auto;
-                border-right: none;
-                border-bottom: 1px solid var(--glass-border);
+                border-right: 1px solid var(--glass-border);
+                border-bottom: none;
+            }
+            
+            .sidebar.show {
+                left: 0;
             }
             
             .page-title {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
+            }
+
+            .user-navbar {
+                left: 0;
+                padding: 0 16px;
+            }
+
+            .user-info span {
+                display: none;
+            }
+
+            .main-content {
+                padding: 16px;
+                padding-top: 76px;
+            }
+
+            .sidebar-backdrop {
+                position: fixed;
+                top: 60px;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1015;
+                display: none;
+            }
+
+            .sidebar-backdrop.show {
+                display: block;
             }
         }
 
@@ -415,17 +499,46 @@
     </style>
 </head>
 <body>
+    <!-- Navbar superior fijo -->
+    <nav class="user-navbar">
+        <div class="d-flex align-items-center gap-3">
+            <!-- Botón hamburguesa para móvil -->
+            <button class="btn btn-outline-custom d-md-none" id="sidebarToggle" type="button">
+                <i class="fas fa-bars"></i>
+            </button>
+            <span class="navbar-brand-mobile d-md-none">Radio Covid</span>
+        </div>
+        
+        <div class="d-flex align-items-center gap-3">
+            <div class="user-info">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <span>{% if user.is_authenticated %}{{ user.username }}{% else %}Invitado{% endif %}</span>
+            </div>
+            {% if user.is_authenticated %}
+            <a href="{% url 'dashboard:dashboard_logout' %}" class="btn-logout">
+                <i class="fas fa-sign-out-alt d-md-none"></i>
+                <span class="d-none d-md-inline"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</span>
+            </a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- Backdrop para móvil -->
+    <div class="sidebar-backdrop d-md-none" id="sidebarBackdrop"></div>
+
     <div class="container-fluid">
         <div class="row">
-            <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse p-0">
+            <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse p-0" id="sidebarMenu">
                 <div class="position-sticky pt-4">
-                    <div class="text-center mb-4 px-3">
+                    <div class="text-center mb-4 px-3 d-none d-md-block">
                         <h4 class="sidebar-brand mb-1">
                             <i class="fas fa-radio me-2"></i>Panel de administracion de Radio Covid
                         </h4>
                         <small class="text-muted-custom">Panel de Control</small>
                     </div>
-                    <hr class="mx-3" style="border-color: rgba(170, 0, 255, 0.3);">
+                    <hr class="mx-3 d-none d-md-block" style="border-color: rgba(170, 0, 255, 0.3);">
                     <ul class="nav flex-column mt-3">
                         <li class="nav-item">
                             <a class="nav-link {% if page_title == 'Dashboard' %}active{% endif %}" href="{% url 'dashboard:home' %}">
@@ -448,8 +561,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if page_title == 'Mensajes de Chat' %}active{% endif %}" href="{% url 'dashboard:ver_chat' %}">
-                                <i class="fas fa-comments me-2"></i> Mensajes de Chat
+                            <a class="nav-link {% if page_title == 'Gestión de Usuarios' %}active{% endif %}" href="{% url 'dashboard:ver_usuarios' %}">
+                                <i class="fas fa-user-cog me-2"></i> Gestión de Usuarios
                             </a>
                         </li>
                         <li class="nav-item">
@@ -473,20 +586,6 @@
             </nav>
 
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content fade-in">
-                <!-- Navbar superior con usuario -->
-                <div class="user-navbar">
-                    <div class="user-info">
-                        <div class="user-avatar">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <span>{% if user.is_authenticated %}{{ user.username }}{% else %}Invitado{% endif %}</span>
-                    </div>
-                    {% if user.is_authenticated %}
-                    <a href="{% url 'dashboard_logout' %}" class="btn-logout">
-                        <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
-                    </a>
-                    {% endif %}
-                </div>
 
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-3 mb-4">
                     <h1 class="page-title">{{ page_title }}</h1>
@@ -513,6 +612,39 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Menú hamburguesa para móvil
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebarMenu = document.getElementById('sidebarMenu');
+            const sidebarBackdrop = document.getElementById('sidebarBackdrop');
+            
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebarMenu.classList.toggle('show');
+                    sidebarBackdrop.classList.toggle('show');
+                });
+            }
+            
+            if (sidebarBackdrop) {
+                sidebarBackdrop.addEventListener('click', function() {
+                    sidebarMenu.classList.remove('show');
+                    sidebarBackdrop.classList.remove('show');
+                });
+            }
+            
+            // Cerrar menú al hacer clic en un link (en móvil)
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth < 768) {
+                        sidebarMenu.classList.remove('show');
+                        sidebarBackdrop.classList.remove('show');
+                    }
+                });
+            });
+        });
+    </script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

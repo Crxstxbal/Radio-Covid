@@ -1,16 +1,17 @@
 from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
-from django.db.models import Max
+from django.db.models import Max, Q
+from django.db import transaction
 from django.http import HttpResponse, StreamingHttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
+from django.utils.decorators import method_decorator
 from rest_framework import viewsets, status
 from rest_framework.decorators import action, api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 import requests
 import json
-from .models import EstacionRadio, OyenteActivo, EstadisticaRadio, MensajeChat
+from .models import EstacionRadio, OyenteActivo, EstadisticaRadio, MensajeChat, UsuarioBloqueado, AdvertenciaChat
 from .serializers import (
     EstacionRadioSerializer, 
     OyenteActivoSerializer, 
@@ -49,6 +50,7 @@ class EstacionRadioViewSet(viewsets.ModelViewSet):
         return Response({"error": "No hay estación activa"}, status=404)
 
 
+@method_decorator(csrf_exempt, name='dispatch')
 class OyenteActivoViewSet(viewsets.ModelViewSet):
     """ViewSet para gestión de oyentes activos"""
     queryset = OyenteActivo.objects.all()
@@ -57,71 +59,116 @@ class OyenteActivoViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post'])
     def registrar_conexion(self, request):
-        """Registrar nueva conexión de oyente"""
-        session_key = request.session.session_key or request.META.get('HTTP_X_SESSION_KEY', '')
+        """Registrar nueva conexión de oyente - usa tab_id como clave única por pestaña"""
+        tab_id = request.data.get('tab_id', '')
         ip_address = request.META.get('REMOTE_ADDR', request.data.get('ip_address', ''))
-        user_agent = request.META.get('HTTP_USER_AGENT', '')
+        user_agent = request.META.get('HTTP_USER_AGENT', '')[:100]
+        usuario_nombre = request.data.get('usuario', '') or 'Anónimo'
+        
+        # Usar tab_id como identificador único (generado por frontend por pestaña)
+        # Si no viene, fallback a IP
+        unique_id = tab_id if tab_id else f"ip_{ip_address}"
 
-        if not session_key:
-            return Response({"error": "Session key requerida"}, status=400)
+        if not unique_id:
+            return Response({"error": "ID de oyente requerido"}, status=400)
 
-        # Crear o actualizar oyente
-        oyente, created = OyenteActivo.objects.get_or_create(
-            session_key=session_key,
-            defaults={
-                'ip_address': ip_address,
-                'user_agent': user_agent,
-                'esta_escuchando': True
-            }
-        )
-
-        if not created:
-            oyente.ultima_actividad = timezone.now()
-            oyente.esta_escuchando = True
-            oyente.save()
-
-        # Actualizar estadísticas
-        self._actualizar_estadisticas()
-
-        return Response({
-            'message': 'Conexión registrada',
-            'oyentes_conectados': OyenteActivo.obtener_conteo_actual()
-        })
+        try:
+            with transaction.atomic():
+                # Intentar obtener existente
+                try:
+                    oyente = OyenteActivo.objects.get(session_key=unique_id)
+                    # Actualizar existente
+                    oyente.ultima_actividad = timezone.now()
+                    oyente.esta_escuchando = True
+                    oyente.ip_address = ip_address
+                    oyente.user_agent = user_agent
+                    # Solo actualizar nombre si viene uno nuevo
+                    if usuario_nombre and usuario_nombre != 'Anónimo':
+                        oyente.usuario = usuario_nombre
+                    oyente.save()
+                except OyenteActivo.DoesNotExist:
+                    # Crear nuevo
+                    OyenteActivo.objects.create(
+                        session_key=unique_id,
+                        ip_address=ip_address,
+                        user_agent=user_agent,
+                        usuario=usuario_nombre,
+                        esta_escuchando=True
+                    )
+                
+                # Actualizar estadísticas
+                self._actualizar_estadisticas()
+                
+                return Response({
+                    'message': 'Conexión registrada',
+                    'oyentes_conectados': OyenteActivo.obtener_conteo_actual()
+                })
+        except Exception:
+            return Response({
+                'message': 'Conexión registrada (cache)',
+                'oyentes_conectados': OyenteActivo.objects.filter(esta_escuchando=True).count()
+            })
 
     @action(detail=False, methods=['post'])
     def actualizar_actividad(self, request):
-        """Actualizar actividad de un oyente"""
-        session_key = request.session.session_key or request.data.get('session_key', '')
+        """Actualizar actividad de un oyente - usa tab_id"""
+        tab_id = request.data.get('tab_id', '')
+        ip_address = request.META.get('REMOTE_ADDR', request.data.get('ip_address', ''))
+        
+        # Usar tab_id o fallback a IP
+        unique_id = tab_id if tab_id else f"ip_{ip_address}"
+        
+        if not unique_id:
+            return Response({"error": "ID de oyente requerido"}, status=400)
         
         try:
-            oyente = OyenteActivo.objects.get(session_key=session_key)
-            oyente.ultima_actividad = timezone.now()
-            oyente.esta_escuchando = True
-            oyente.save()
-            
-            return Response({
-                'message': 'Actividad actualizada',
-                'oyentes_conectados': OyenteActivo.obtener_conteo_actual()
-            })
+            with transaction.atomic():
+                oyente = OyenteActivo.objects.get(session_key=unique_id)
+                oyente.ultima_actividad = timezone.now()
+                oyente.esta_escuchando = True
+                oyente.save()
+                
+                return Response({
+                    'message': 'Actividad actualizada',
+                    'oyentes_conectados': OyenteActivo.obtener_conteo_actual()
+                })
         except OyenteActivo.DoesNotExist:
             return Response({"error": "Oyente no encontrado"}, status=404)
+        except Exception:
+            return Response({
+                'message': 'Actividad actualizada (cache)',
+                'oyentes_conectados': OyenteActivo.objects.filter(esta_escuchando=True).count()
+            })
 
     @action(detail=False, methods=['post'])
     def desconexion(self, request):
-        """Registrar desconexión de oyente"""
-        session_key = request.session.session_key or request.data.get('session_key', '')
+        """Registrar desconexión de oyente - usa tab_id"""
+        tab_id = request.data.get('tab_id', '')
+        ip_address = request.META.get('REMOTE_ADDR', request.data.get('ip_address', ''))
+        
+        # Usar tab_id o fallback a IP
+        unique_id = tab_id if tab_id else f"ip_{ip_address}"
+        
+        if not unique_id:
+            return Response({"error": "ID de oyente requerido"}, status=400)
         
         try:
-            oyente = OyenteActivo.objects.get(session_key=session_key)
-            oyente.esta_escuchando = False
-            oyente.save()
-            
-            return Response({
-                'message': 'Desconexión registrada',
-                'oyentes_conectados': OyenteActivo.obtener_conteo_actual()
-            })
+            with transaction.atomic():
+                oyente = OyenteActivo.objects.get(session_key=unique_id)
+                oyente.esta_escuchando = False
+                oyente.save()
+                
+                return Response({
+                    'message': 'Desconexión registrada',
+                    'oyentes_conectados': OyenteActivo.obtener_conteo_actual()
+                })
         except OyenteActivo.DoesNotExist:
             return Response({"error": "Oyente no encontrado"}, status=404)
+        except Exception:
+            return Response({
+                'message': 'Desconexión registrada (cache)',
+                'oyentes_conectados': OyenteActivo.objects.filter(esta_escuchando=True).count()
+            })
 
     @action(detail=False, methods=['get', 'post'])
     def conteo_actual(self, request):

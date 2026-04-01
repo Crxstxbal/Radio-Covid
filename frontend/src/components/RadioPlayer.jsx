@@ -8,11 +8,48 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 const RadioPlayer = () => {
   const [isPlaying, setIsPlaying] = useState(false)
-  const [volume, setVolume] = useState(0.72)
-  const [isMuted, setIsMuted] = useState(false)
+  const [volume, setVolume] = useState(() => {
+    // Recuperar volumen guardado o usar default 0.72
+    const savedVolume = localStorage.getItem('radio_volume')
+    return savedVolume ? parseFloat(savedVolume) : 0.72
+  })
+  const [isMuted, setIsMuted] = useState(() => {
+    // Recuperar estado de mute
+    const savedMuted = localStorage.getItem('radio_muted')
+    return savedMuted === 'true'
+  })
   const [isConnecting, setIsConnecting] = useState(false)
   const [estacion, setEstacion] = useState(null)
   const audioRef = useRef(null)
+
+  // Guardar volumen cuando cambie
+  useEffect(() => {
+    localStorage.setItem('radio_volume', volume.toString())
+  }, [volume])
+
+  // Guardar estado de mute
+  useEffect(() => {
+    localStorage.setItem('radio_muted', isMuted.toString())
+  }, [isMuted])
+
+  // Guardar estado de reproducción
+  useEffect(() => {
+    localStorage.setItem('radio_was_playing', isPlaying.toString())
+  }, [isPlaying])
+
+  // Auto-reproducir si estaba escuchando antes
+  useEffect(() => {
+    const wasPlaying = localStorage.getItem('radio_was_playing') === 'true'
+    if (wasPlaying && estacion) {
+      // Esperar a que el audio esté listo
+      const timer = setTimeout(() => {
+        if (audioRef.current) {
+          togglePlayPause()
+        }
+      }, 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [estacion])
 
   useEffect(() => {
     cargarEstacion()
@@ -69,10 +106,10 @@ const RadioPlayer = () => {
   const cargarEstacion = async () => {
     try {
       const data = await apiService.getEstacionActiva()
-      // Usar URL directa del stream, no el proxy
+      // Usar proxy del backend para evitar CORS con cualquier URL
       const estacionFinal = {
         ...data,
-        stream_url: data.stream_url || data.url_stream // Usar URL directa
+        stream_url: `${API_URL}/api/stream/`
       }
       setEstacion(estacionFinal)
     } catch (error) {
@@ -133,6 +170,7 @@ const RadioPlayer = () => {
         <audio
           ref={audioRef}
           src={estacion.stream_url}
+          type="audio/mpeg"
           crossOrigin="anonymous"
           preload="none"
         />

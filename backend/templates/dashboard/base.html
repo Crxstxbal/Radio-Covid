@@ -96,7 +96,69 @@
         .main-content {
             background: transparent;
             min-height: 100vh;
-            padding: 24px;
+            padding: 100px 32px 32px 32px;
+        }
+
+        .user-navbar {
+            background: linear-gradient(135deg, rgba(26, 0, 51, 0.85) 0%, rgba(170, 0, 255, 0.15) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(170, 0, 255, 0.3);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 250px;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--soft-white);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--neon-purple) 0%, var(--neon-red) 50%, var(--neon-orange) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+            box-shadow: 0 0 20px rgba(170, 0, 255, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-logout {
+            background: linear-gradient(135deg, rgba(255, 23, 68, 0.3) 0%, rgba(255, 109, 0, 0.2) 100%);
+            border: 1px solid rgba(255, 23, 68, 0.5);
+            color: #FF6B6B;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-logout:hover {
+            background: linear-gradient(135deg, rgba(255, 23, 68, 0.5) 0%, rgba(255, 109, 0, 0.3) 100%);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 23, 68, 0.3);
         }
 
         .page-title {
@@ -396,8 +458,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {% if page_title == 'Mensajes de Chat' %}active{% endif %}" href="{% url 'dashboard:ver_chat' %}">
-                                <i class="fas fa-comments me-2"></i> Mensajes de Chat
+                            <a class="nav-link {% if page_title == 'Gestión de Usuarios' %}active{% endif %}" href="{% url 'dashboard:ver_usuarios' %}">
+                                <i class="fas fa-user-cog me-2"></i> Gestión de Usuarios
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if page_title == 'Moderación de Chat' %}active{% endif %}" href="{% url 'dashboard:chat_moderacion' %}">
+                                <i class="fas fa-shield-alt me-2"></i> Moderación Chat
                             </a>
                         </li>
                         <hr class="mx-3 my-3" style="border-color: rgba(170, 0, 255, 0.3);">
@@ -416,6 +483,21 @@
             </nav>
 
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content fade-in">
+                <!-- Navbar superior con usuario -->
+                <div class="user-navbar">
+                    <div class="user-info">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <span>{% if user.is_authenticated %}{{ user.username }}{% else %}Invitado{% endif %}</span>
+                    </div>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'dashboard:dashboard_logout' %}" class="btn-logout">
+                        <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                    </a>
+                    {% endif %}
+                </div>
+
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-3 mb-4">
                     <h1 class="page-title">{{ page_title }}</h1>
                     <div class="btn-toolbar mb-2 mb-md-0">

@@ -14,6 +14,23 @@ const UserCounter = () => {
 
   const { lastMessage } = useWebSocket('/ws/radio/')
 
+  // Registrar conexión al montar el componente
+  useEffect(() => {
+    const registrarOyente = async () => {
+      try {
+        // Obtener nombre de usuario del localStorage
+        const userData = JSON.parse(localStorage.getItem('user') || '{}')
+        const username = userData.username || userData.email?.split('@')[0] || 'Anónimo'
+        
+        await apiService.registrarConexion(username)
+        console.log('Conexión registrada para:', username)
+      } catch (error) {
+        console.error('Error al registrar conexión inicial:', error)
+      }
+    }
+    registrarOyente()
+  }, [])
+
   useEffect(() => {
     cargarEstadisticas()
     const interval = setInterval(cargarEstadisticas, 30000)
