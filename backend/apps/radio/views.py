@@ -233,17 +233,22 @@ def streaming_proxy(request):
         print(f"[STREAMING] Usando URL: {estacion.stream_url}")
         print(f"[STREAMING] Estación: {estacion.nombre} (ID: {estacion.id})")
         
-        # Hacer la petición al servidor de streaming
+        # Hacer la petición al servidor de streaming con headers de navegador real
         response = requests.get(
             estacion.stream_url,
             stream=True,
             headers={
-                'User-Agent': 'Mozilla/5.0 (compatible; RadioProxy/1.0)',
-                'Accept': '*/*',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'Accept': 'audio/webm,audio/ogg,audio/wav,audio/*;q=0.9,application/ogg;q=0.7,video/*;q=0.6,*/*;q=0.5',
+                'Accept-Language': 'en-US,en;q=0.9',
                 'Accept-Encoding': 'identity',
-                'Range': request.META.get('HTTP_RANGE', ''),
+                'Referer': 'https://localhost/',
+                'Origin': 'https://localhost',
+                'Connection': 'keep-alive',
+                'Range': request.META.get('HTTP_RANGE', 'bytes=0-'),
             },
-            timeout=30
+            timeout=30,
+            allow_redirects=True
         )
         
         # Crear respuesta streaming
