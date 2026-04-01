@@ -106,10 +106,15 @@ const RadioPlayer = () => {
   const cargarEstacion = async () => {
     try {
       const data = await apiService.getEstacionActiva()
-      // Usar proxy del backend para evitar CORS con cualquier URL
+      // En producción (Cloudflare) usar URL directa, en local usar proxy
+      const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      const streamUrl = isLocalhost 
+        ? `${API_URL}/api/stream/`  // Proxy para local
+        : data.stream_url         // URL directa para producción
+      
       const estacionFinal = {
         ...data,
-        stream_url: `${API_URL}/api/stream/`
+        stream_url: streamUrl
       }
       setEstacion(estacionFinal)
     } catch (error) {
