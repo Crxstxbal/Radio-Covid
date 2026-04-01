@@ -229,6 +229,10 @@ def streaming_proxy(request):
         if not estacion or not estacion.stream_url:
             return HttpResponse("No hay URL de streaming configurada", status=404)
         
+        # Debug: imprimir qué URL está usando
+        print(f"[STREAMING] Usando URL: {estacion.stream_url}")
+        print(f"[STREAMING] Estación: {estacion.nombre} (ID: {estacion.id})")
+        
         # Hacer la petición al servidor de streaming
         response = requests.get(
             estacion.stream_url,
@@ -238,7 +242,8 @@ def streaming_proxy(request):
                 'Accept': '*/*',
                 'Accept-Encoding': 'identity',
                 'Range': request.META.get('HTTP_RANGE', ''),
-            }
+            },
+            timeout=30
         )
         
         # Crear respuesta streaming
