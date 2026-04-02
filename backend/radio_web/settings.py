@@ -107,10 +107,9 @@ ASGI_APPLICATION = 'radio_web.asgi.application'
 if os.environ.get('DATABASE_URL'):
     # Producción: PostgreSQL (Supabase, Render, etc.)
     DATABASES = {
-        'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL'),
+        'default': dj_database_url.parse(
+            os.environ.get('DATABASE_URL'),
             conn_max_age=600,
-            ssl_require=True  # SSL activado para puerto 5432
         )
     }
 else:
