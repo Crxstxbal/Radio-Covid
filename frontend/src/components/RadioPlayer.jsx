@@ -106,10 +106,10 @@ const RadioPlayer = () => {
   const cargarEstacion = async () => {
     try {
       const data = await apiService.getEstacionActiva()
-      // Usar proxy del backend para evitar CORS
+      // Usar URL directa del backend (el servidor tiene CORS habilitado)
       const estacionFinal = {
         ...data,
-        stream_url: `${API_URL}/api/radio/streaming/`
+        stream_url: data.stream_url || data.url_stream
       }
       setEstacion(estacionFinal)
     } catch (error) {
