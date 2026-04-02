@@ -1,0 +1,712 @@
+[
+{
+  "model": "sessions.session",
+  "pk": "0cn1b7vcjly8mbybg1uiu1gpg73m8in4",
+  "fields": {
+    "session_data": ".eJxVjMsKwjAQAP9lzxKShs2jR-9-Q9jNw1QlgaY9if8uhR70OjPMGwLtWw37yGtYEsyg4PLLmOIzt0OkB7V7F7G3bV1YHIk47RC3nvLrerZ_g0qjwgxSS0lsjMaC2avokCdtvEGPOaNPPnKJTiXLUklrdSmkUrSTdJ7QFg2fL8xSN4A:1w7exX:pTR1ra1J4BXHYa2z_dBpZ2vbFEqB2nk68H7YREIW-UQ",
+    "expire_date": "2026-04-14T19:41:07.681Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "1ks5olc0ifsgei9uqykcll131v3364o3",
+  "fields": {
+    "session_data": ".eJxVjMsKwjAQAP9lzxKShs2jR-9-Q9jNw1QlgaY9if8uhR70OjPMGwLtWw37yGtYEsyg4PLLmOIzt0OkB7V7F7G3bV1YHIk47RC3nvLrerZ_g0qjwgxSS0lsjMaC2avokCdtvEGPOaNPPnKJTiXLUklrdSmkUrSTdJ7QFg2fL8xSN4A:1w7i5T:xbZrW1lwB8f6yfrJRP1hyDp2oEmHTfjIIeAgMaejycU",
+    "expire_date": "2026-04-14T23:01:31.927Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "1rsfjxxpq9l5ujhfk34oy77j859ojxlq",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQAP9lz4YslFLo0bvf0CzsIlUDSR8n47-bJj3odWYyb5ho38q0r7JMM8MIAS6_LFJ6Sj0EP6jem0qtbssc1ZGo067q1lhe17P9GxRaC4xAUZsoQVBz7tF6zsb6OFgWzKl3KSA6HV1G5xl76ajzPuiE1mQ7CA3w-QLzDDfT:1w7HDS:ueVoGb-t68oLFCZZeD1KugL9iGsmgioxS5gtoJxpwbs",
+    "expire_date": "2026-04-13T18:19:58.406Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "2ctdiqsm7fl3qic53e9mitot764q2hsf",
+  "fields": {
+    "session_data": ".eJxVjEsOAiEQBe_C2pBuQD4u3XsGAg3IqIFkmFkZ725IZqHbV1XvzXzYt-r3kVe_JHZhyE6_Wwz0zG2C9Ajt3jn1tq1L5FPhBx381lN-XQ_376CGUWdthCwmCAVFEDq0CClmGYVxNpDS4KympAA1Sp2iE8VoAhXJFCBwZ_b5AstkNzk:1w7IJ4:N-FxkbB4DYZh75VOH_8P30DBORq0Ogcop3WxodFsLo4",
+    "expire_date": "2026-04-13T19:29:50.443Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "2h3x4chpsikmbdlzhl4e7oh5xls3vuz7",
+  "fields": {
+    "session_data": ".eJxVjEsOAiEQBe_C2pBuQD4u3XsGAg3IqIFkmFkZ725IZqHbV1XvzXzYt-r3kVe_JHZhyE6_Wwz0zG2C9Ajt3jn1tq1L5FPhBx381lN-XQ_376CGUWdthCwmCAVFEDq0CClmGYVxNpDS4KympAA1Sp2iE8VoAhXJFCBwZ_b5AstkNzk:1w7JPb:O9zN3EomVoJhCsdBefbLeDCjYWWb6CsOpCoDQJk32v0",
+    "expire_date": "2026-04-13T20:40:39.672Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "2j0dxe86uabpu5ls5iol2c7snen5z99t",
+  "fields": {
+    "session_data": ".eJxVjDEOgzAMAP_iuYrskMTA2L1vQHYIhbZKJAJT1b9XSAztene6Nwyyb_Ow17QOywg9EFx-mUp8pnyI8SH5XkwseVsXNUdiTlvNrYzpdT3bv8EsdYYeGmbhQN4LO-yCivNOU6fsvCWnLKRxarCLDds2YGgtoSVMKHYKFC18vrE0Nmg:1w7Ghw:SBdHLQOhfLCbvyM8gTIhgkIz_FGCpUAcHFt77aMJf5k",
+    "expire_date": "2026-04-13T17:47:24.640Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "3kp5dccsgm4g8agwt1j9s836s8wsyy3l",
+  "fields": {
+    "session_data": ".eJxVjM0KwjAQBt9lzxKyTUibHr37DGWT_WKq0kJ_TuK7S6EHvc4M86ZB9q0O-4plGJV6YkuXX5gkPzEdRh8y3WeT52lbxmSOxJx2NbdZ8bqe7d-gylqpJ3GsTcsck0USAEVb11kPB9uVEHxBzsX7hhsfENlpKwHFcoAG8ZE-Xx1NOI8:1w7fge:n0MKjbA2fBfekE1jj38EJGNFVy4e5hLjeAmeY5VaPbE",
+    "expire_date": "2026-04-14T20:27:44.845Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "677ec346qiid0wpm2m9d5898udkueius",
+  "fields": {
+    "session_data": ".eJxVjMsKwjAQAP9lzxKS5t2jd78h7CYbU5UWmvYk_rsUetDrzDBvSLhvLe2d1zQVGCHA5ZcR5ifPhygPnO-LyMu8rROJIxGn7eK2FH5dz_Zv0LA3GCGyDGg1D1FVXzjqIbB3UlpXjZOl1mC8KpZIDah0tWRzNJIYs4_kpYLPF9jVN60:1w6v7t:80qflUBexRQukdzsN_Tcybm7XmGum3l8r45KOSf47N4",
+    "expire_date": "2026-04-12T18:44:45.422Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "b5h01v4ypsabuulujga1ko0u9o1cxrwp",
+  "fields": {
+    "session_data": ".eJxVjM0KwjAQBt9lzxKyTUibHr37DGWT_WKq0kJ_TuK7S6EHvc4M86ZB9q0O-4plGJV6YkuXX5gkPzEdRh8y3WeT52lbxmSOxJx2NbdZ8bqe7d-gylqpJ3GsTcsck0USAEVb11kPB9uVEHxBzsX7hhsfENlpKwHFcoAG8ZE-Xx1NOI8:1w7fg3:hOd-lD3875gAjzBVWXbgUfdvjFPbo5b8C1dFpCfc5rs",
+    "expire_date": "2026-04-14T20:27:07.964Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ciooi421lfe017lqk7jxh89w9n21nzdh",
+  "fields": {
+    "session_data": ".eJxVjEsOAiEQBe_C2pBuQD4u3XsGAg3IqIFkmFkZ725IZqHbV1XvzXzYt-r3kVe_JHZhyE6_Wwz0zG2C9Ajt3jn1tq1L5FPhBx381lN-XQ_376CGUWdthCwmCAVFEDq0CClmGYVxNpDS4KympAA1Sp2iE8VoAhXJFCBwZ_b5AstkNzk:1w7JEs:5i8GA0ar1EtJVA_bSpKJdLDw_mqOrnYFKYd9U0meAXA",
+    "expire_date": "2026-04-13T20:29:34.572Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "fkwylc1w1ro3ge9k98khgdnfyvk9p8xh",
+  "fields": {
+    "session_data": ".eJxVjDEOgzAMAP_iuYrskMTA2L1vQHYIhbZKJAJT1b9XSAztene6Nwyyb_Ow17QOywg9EFx-mUp8pnyI8SH5XkwseVsXNUdiTlvNrYzpdT3bv8EsdYYeGmbhQN4LO-yCivNOU6fsvCWnLKRxarCLDds2YGgtoSVMKHYKFC18vrE0Nmg:1w7I28:nC4ONqrcuGqHsvr-0XbTn6Q2s2eWBAq3XdLr1LP_VUg",
+    "expire_date": "2026-04-13T19:12:20.774Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "i35sxc1blmb3hqw97uv75bvtqr6wxtzw",
+  "fields": {
+    "session_data": ".eJxVjMsKwjAQAP9lzxKyeadH735DyG4SW5UWmvYk_rsUetDrzDBvSHnfxrT3uqapwACo4PILKfOzzocpjzzfF8HLvK0TiSMRp-3itpT6up7t32DMfYQBqJFHryRnRBeM5sjWU9CUKUb2HBFVa9IaZT0rI6XTTjmHHLkGjgyfL_gYN3M:1w7gXp:sge4bhVPYK_2sbV7tQCp07JoSle10qM2T_thBTpv2Yo",
+    "expire_date": "2026-04-14T21:22:41.606Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ip05ffr0lu743dh120q16qu7rg2hmm73",
+  "fields": {
+    "session_data": ".eJxVjDEOgzAMAP_iuYrskMTA2L1vQHYIhbZKJAJT1b9XSAztene6Nwyyb_Ow17QOywg9EFx-mUp8pnyI8SH5XkwseVsXNUdiTlvNrYzpdT3bv8EsdYYeGmbhQN4LO-yCivNOU6fsvCWnLKRxarCLDds2YGgtoSVMKHYKFC18vrE0Nmg:1w7G5P:_Gs9XXxFHxBKbOZIRhwW2a-66ZNaxl8HO1quuadVrzw",
+    "expire_date": "2026-04-13T17:07:35.311Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "iuk6hh2ehoi0a0rt36wzirlozmmqv6qp",
+  "fields": {
+    "session_data": ".eJxVjDEOgzAMAP_iuYrskMTA2L1vQHYIhbZKJAJT1b9XSAztene6Nwyyb_Ow17QOywg9EFx-mUp8pnyI8SH5XkwseVsXNUdiTlvNrYzpdT3bv8EsdYYeGmbhQN4LO-yCivNOU6fsvCWnLKRxarCLDds2YGgtoSVMKHYKFC18vrE0Nmg:1w7G5b:9zpxJ6gBEDPKc06VBqcVdVzNbBOHxifQiSX-jp6Ni0Y",
+    "expire_date": "2026-04-13T17:07:47.065Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "jfk54syfushine3c3itv2pumytexcz8m",
+  "fields": {
+    "session_data": ".eJxVjLsOgzAMAP_FcxUBedAwducbIju2G9oKJAJT1X-vkBja9e50b0i4byXtVdY0MQwQ4PLLCPNT5kPwA-f7YvIyb-tE5kjMaasZF5bX7Wz_BgVrgQE8NbmngNQ6jT7rlbyq7WIkF1ijE7GCgq2yDdl5YYrYcaPY9c6yC_D5AhaqOS4:1w6v59:rzRvCC0ZhBgTL_AH1yzmQ7FL4G7etg0s4EfkDKJiqko",
+    "expire_date": "2026-04-12T18:41:55.674Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "jxloja5yqbxmubo992ubz9udoazub7oc",
+  "fields": {
+    "session_data": ".eJxVjMsKwjAQAP9lzxKyeadH735DyG4SW5UWmvYk_rsUetDrzDBvSHnfxrT3uqapwACo4PILKfOzzocpjzzfF8HLvK0TiSMRp-3itpT6up7t32DMfYQBqJFHryRnRBeM5sjWU9CUKUb2HBFVa9IaZT0rI6XTTjmHHLkGjgyfL_gYN3M:1w7gXB:BaujFIQqGT3Gug3cFDhGb2NJmlWRwzMTpKgQKD5FQh4",
+    "expire_date": "2026-04-14T21:22:01.897Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "lbqucqnmrd9v5oid32iqr7yyg88u407w",
+  "fields": {
+    "session_data": ".eJxVjEsOwiAUAO_y1obwK58u3XsGwoOHVA0kpV0Z726adKHbmcm8IcR9q2EftIYlwwxCweUXYkxPaofJj9junaXetnVBdiTstIPdeqbX9Wz_BjWOCjM4dFkX6UuhnIgnLwQiyWkiSdwIy410yRvLvSLSxluvuUWpitY2G57g8wUWxje7:1w7i8C:f00-8YoYtIbH3jyky-p-VtT4Hf8OsrXw_w-qVKCcrq8",
+    "expire_date": "2026-04-14T23:04:20.158Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "lnmpw7t7cy14gv2wvjx2akz5z35u9k4b",
+  "fields": {
+    "session_data": ".eJxVjMsKwjAQAP9lzxKShs2jR-9-Q9jNw1QlgaY9if8uhR70OjPMGwLtWw37yGtYEsyg4PLLmOIzt0OkB7V7F7G3bV1YHIk47RC3nvLrerZ_g0qjwgxSS0lsjMaC2avokCdtvEGPOaNPPnKJTiXLUklrdSmkUrSTdJ7QFg2fL8xSN4A:1w7fbX:NFnyDHU6_p0ISWqgB_hkLosoJ1BYWhdcDTfmwDXtt5E",
+    "expire_date": "2026-04-14T20:22:27.553Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "p2ekgvatytgyy7gmkcwknzcufqvf7kui",
+  "fields": {
+    "session_data": ".eJxVjMsKwjAQAP9lzxKShs2jR-9-Q9jNw1QlgaY9if8uhR70OjPMGwLtWw37yGtYEsyg4PLLmOIzt0OkB7V7F7G3bV1YHIk47RC3nvLrerZ_g0qjwgxSS0lsjMaC2avokCdtvEGPOaNPPnKJTiXLUklrdSmkUrSTdJ7QFg2fL8xSN4A:1w7hbW:KNfZF1mRtIRxXXcLvPSmxwDr8NciA6dRn2zAJ5m4oDM",
+    "expire_date": "2026-04-14T22:30:34.653Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "p9yw0rvaybwd0wn2bvluo17224171py4",
+  "fields": {
+    "session_data": ".eJxVjEsOwiAUAO_y1obwK58u3XsGwoOHVA0kpV0Z726adKHbmcm8IcR9q2EftIYlwwxCweUXYkxPaofJj9junaXetnVBdiTstIPdeqbX9Wz_BjWOCjM4dFkX6UuhnIgnLwQiyWkiSdwIy410yRvLvSLSxluvuUWpitY2G57g8wUWxje7:1w7iV7:GKiYkSJQSKPAq3pyCyvRZry5KoG6xqfWcjtSeeSvF4w",
+    "expire_date": "2026-04-14T23:28:01.968Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ty7x7fq2b8uqdvtokrxydnmf3pies7ci",
+  "fields": {
+    "session_data": ".eJxVjDEOgzAMAP_iuYrskMTA2L1vQHYIhbZKJAJT1b9XSAztene6Nwyyb_Ow17QOywg9EFx-mUp8pnyI8SH5XkwseVsXNUdiTlvNrYzpdT3bv8EsdYYeGmbhQN4LO-yCivNOU6fsvCWnLKRxarCLDds2YGgtoSVMKHYKFC18vrE0Nmg:1w6ro3:kqjjhhMRrURTtNrnFtxx0zNLFVm_5zFgv6B7I9XWwwU",
+    "expire_date": "2026-04-12T15:12:03.834Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "tz9dvgq8vfijhtc5quct4ppk8wvrver3",
+  "fields": {
+    "session_data": ".eJxVjEsOwiAUAO_y1obwK58u3XsGwoOHVA0kpV0Z726adKHbmcm8IcR9q2EftIYlwwxCweUXYkxPaofJj9junaXetnVBdiTstIPdeqbX9Wz_BjWOCjM4dFkX6UuhnIgnLwQiyWkiSdwIy410yRvLvSLSxluvuUWpitY2G57g8wUWxje7:1w7gZT:23FWfysZnV1pWBf2_8Okh8OJaBS2-O1iQ6e5eyqbBa0",
+    "expire_date": "2026-04-14T21:24:23.947Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ugkztu15hgzxn13hcxp2hevuix3rz06i",
+  "fields": {
+    "session_data": ".eJxVjDEOgzAMAP_iuYrskMTA2L1vQHYIhbZKJAJT1b9XSAztene6Nwyyb_Ow17QOywg9EFx-mUp8pnyI8SH5XkwseVsXNUdiTlvNrYzpdT3bv8EsdYYeGmbhQN4LO-yCivNOU6fsvCWnLKRxarCLDds2YGgtoSVMKHYKFC18vrE0Nmg:1w7ICa:JtVIhcV4dpVpOEfO01VAnsUwBYa_rRlO4zTaIC1fDv4",
+    "expire_date": "2026-04-13T19:23:08.564Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "vmh3696ekvet2kjzdfkpcwjk5glba4hx",
+  "fields": {
+    "session_data": ".eJxVjMsKwjAQAP9lzxKShs2jR-9-Q9jNw1QlgaY9if8uhR70OjPMGwLtWw37yGtYEsyg4PLLmOIzt0OkB7V7F7G3bV1YHIk47RC3nvLrerZ_g0qjwgxSS0lsjMaC2avokCdtvEGPOaNPPnKJTiXLUklrdSmkUrSTdJ7QFg2fL8xSN4A:1w7fVg:M6PkIEcXEcN_AV6CLlPUb-_srZ68N1HxJkVRn28iOmo",
+    "expire_date": "2026-04-14T20:16:24.339Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "wqeomuxs1chw9v8e38z19fx72ibwwzzp",
+  "fields": {
+    "session_data": ".eJxVjDEOgzAMAP_iuYqIMbFg7N43oNhxCm0VJAJT1b9XSAztene6N4xx36Zxr7aOc4IBvIfLL5SoTyuHSY9Y7ovTpWzrLO5I3Gmruy3JXtez_RtMsU4wQDAk7LVriVUyYoOaGdksiUbKKA0yI4pvKaSOmHxqfNdnNBahQPD5Avx6N5I:1w7gUz:jlcJRQ4CY7XEQilFcMartDE2zEV5P2crZZ85QB5spJU",
+    "expire_date": "2026-04-14T21:19:45.919Z"
+  }
+},
+{
+  "model": "radio.estacionradio",
+  "pk": 1,
+  "fields": {
+    "nombre": "Radio Covid",
+    "descripcion": "La mejor música 24/7 - Streaming en vivo",
+    "stream_url": "http://186.67.152.218:8600/orientefm2",
+    "logo": "",
+    "activa": true,
+    "fecha_creacion": "2026-03-29T15:10:54.982Z",
+    "fecha_actualizacion": "2026-04-01T01:29:37.991Z"
+  }
+},
+{
+  "model": "radio.oyenteactivo",
+  "pk": 89,
+  "fields": {
+    "session_key": "tab_4jf1i2j4nqc_1775004310896",
+    "usuario": "Anónimo",
+    "ip_address": "127.0.0.1",
+    "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Sa",
+    "fecha_conexion": "2026-04-01T00:45:12.789Z",
+    "ultima_actividad": "2026-04-01T00:50:59.280Z",
+    "esta_escuchando": true
+  }
+},
+{
+  "model": "radio.estadisticaradio",
+  "pk": 1,
+  "fields": {
+    "fecha": "2026-03-30",
+    "oyentes_maximos_simultaneos": 8,
+    "total_conexiones": 95,
+    "tiempo_promedio_escucha": null
+  }
+},
+{
+  "model": "radio.estadisticaradio",
+  "pk": 2,
+  "fields": {
+    "fecha": "2026-03-31",
+    "oyentes_maximos_simultaneos": 9,
+    "total_conexiones": 170,
+    "tiempo_promedio_escucha": null
+  }
+},
+{
+  "model": "radio.estadisticaradio",
+  "pk": 3,
+  "fields": {
+    "fecha": "2026-04-01",
+    "oyentes_maximos_simultaneos": 3,
+    "total_conexiones": 43,
+    "tiempo_promedio_escucha": null
+  }
+},
+{
+  "model": "radio.mensajechat",
+  "pk": 1,
+  "fields": {
+    "usuario": "castroleal231@gmail.com",
+    "mensaje": "hola",
+    "fecha_envio": "2026-03-30T17:47:35.284Z",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "radio.mensajechat",
+  "pk": 2,
+  "fields": {
+    "usuario": "castroleal231@gmail.com",
+    "mensaje": "holña",
+    "fecha_envio": "2026-03-30T17:47:37.313Z",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "radio.mensajechat",
+  "pk": 5,
+  "fields": {
+    "usuario": "castroleal231@gmail.com",
+    "mensaje": "hola",
+    "fecha_envio": "2026-03-30T18:23:06.247Z",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "radio.mensajechat",
+  "pk": 6,
+  "fields": {
+    "usuario": "castroleal231@gmail.com",
+    "mensaje": "wena",
+    "fecha_envio": "2026-03-30T18:23:21.714Z",
+    "ip_address": null
+  }
+},
+{
+  "model": "radio.mensajechat",
+  "pk": 7,
+  "fields": {
+    "usuario": "castroleal231@gmail.com",
+    "mensaje": "wena",
+    "fecha_envio": "2026-03-30T18:23:21.727Z",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "radio.mensajechat",
+  "pk": 10,
+  "fields": {
+    "usuario": "Txbal",
+    "mensaje": "fafa",
+    "fecha_envio": "2026-03-30T19:33:10.784Z",
+    "ip_address": null
+  }
+},
+{
+  "model": "radio.mensajechat",
+  "pk": 11,
+  "fields": {
+    "usuario": "Txbal",
+    "mensaje": "fafa",
+    "fecha_envio": "2026-03-30T19:33:10.799Z",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "radio.mensajechat",
+  "pk": 12,
+  "fields": {
+    "usuario": "Txbal",
+    "mensaje": "asfaf",
+    "fecha_envio": "2026-03-31T19:23:03.233Z",
+    "ip_address": null
+  }
+},
+{
+  "model": "radio.mensajechat",
+  "pk": 13,
+  "fields": {
+    "usuario": "Txbal",
+    "mensaje": "asfaf",
+    "fecha_envio": "2026-03-31T19:23:03.235Z",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "radio.mensajechat",
+  "pk": 14,
+  "fields": {
+    "usuario": "Txbal",
+    "mensaje": "aa",
+    "fecha_envio": "2026-03-31T19:23:08.097Z",
+    "ip_address": "127.0.0.1"
+  }
+},
+{
+  "model": "radio.mensajechat",
+  "pk": 15,
+  "fields": {
+    "usuario": "Txbal",
+    "mensaje": "aa",
+    "fecha_envio": "2026-03-31T19:23:08.097Z",
+    "ip_address": null
+  }
+},
+{
+  "model": "radio.advertenciachat",
+  "pk": 1,
+  "fields": {
+    "username": "DJJota",
+    "advertido_por": "Txbal",
+    "razon": "Mensaje inapropiado",
+    "mensaje_original": "asfa",
+    "fecha_advertencia": "2026-03-31T22:40:18.017Z",
+    "leida": false
+  }
+},
+{
+  "model": "radio.usuariobloqueado",
+  "pk": 1,
+  "fields": {
+    "username": "seba",
+    "ip_address": null,
+    "fecha_bloqueo": "2026-03-31T22:58:24.072Z",
+    "fecha_expiracion": null,
+    "bloqueado_por": "Txbal",
+    "activo": false,
+    "tipo_accion": "",
+    "username_objetivo": "",
+    "moderador": "",
+    "mensaje_id": null,
+    "contenido_mensaje": "",
+    "razon": "Comportamiento inapropiado en chat",
+    "fecha_accion": "2026-03-31T22:58:24.072Z",
+    "ip_moderador": null
+  }
+},
+{
+  "model": "users.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$AY9nfU3qsi8mEY9SymQRxl$zjKwrLQ6RaY7i15FVOPT+7Sio9sKc0lqHzxzEhBIqG4=",
+    "last_login": "2026-03-31T23:01:31.922Z",
+    "is_superuser": true,
+    "username": "Txbal",
+    "email": "castroleal231@gmail.com",
+    "first_name": "",
+    "last_name": "",
+    "bio": "",
+    "avatar": "",
+    "fecha_nacimiento": null,
+    "telefono": "",
+    "es_premium": false,
+    "fecha_creacion": "2026-03-29T15:02:48.722Z",
+    "date_joined": "2026-03-29T15:02:48.329Z",
+    "is_active": true,
+    "is_staff": true,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$q4xe2Z7jkDhY7wkz8tZj28$2bE3Mkfy5AX04vHh2216IoeGysqVkhLw0IyGVta97hM=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "cr7",
+    "email": "cr7@gmail.com",
+    "first_name": "",
+    "last_name": "",
+    "bio": "",
+    "avatar": "",
+    "fecha_nacimiento": null,
+    "telefono": "",
+    "es_premium": false,
+    "fecha_creacion": "2026-03-29T15:58:47.378Z",
+    "date_joined": "2026-03-29T15:58:47.378Z",
+    "is_active": true,
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$XBl28tZJHkUVT1iGWVojPq$TX4TNeue9B+ix/WHpMIgFXXVe2guJOd2MhuuBcZxfog=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "jaime",
+    "email": "jaime@gmail.com",
+    "first_name": "",
+    "last_name": "",
+    "bio": "",
+    "avatar": "",
+    "fecha_nacimiento": null,
+    "telefono": "",
+    "es_premium": false,
+    "fecha_creacion": "2026-03-29T16:00:47.692Z",
+    "date_joined": "2026-03-29T16:00:47.692Z",
+    "is_active": true,
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$ighmKM5ZEt4X4wQ3rbGSOa$ep6dZ5Jxy8e7hyH5epZKjVPMfbByBni1oY6xhrWcWjY=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "jaimex",
+    "email": "jaimex@gmail.com",
+    "first_name": "",
+    "last_name": "",
+    "bio": "",
+    "avatar": "",
+    "fecha_nacimiento": null,
+    "telefono": "",
+    "es_premium": false,
+    "fecha_creacion": "2026-03-29T16:24:15.598Z",
+    "date_joined": "2026-03-29T16:24:15.598Z",
+    "is_active": true,
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$UbT9dodNEzybnYlIQTryij$tJ6RaNxyEEE63hQ+TQ3iLh3OdLyHB3PuWCC/+wjvQHE=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "testuser5",
+    "email": "test5@example.com",
+    "first_name": "",
+    "last_name": "",
+    "bio": "",
+    "avatar": "",
+    "fecha_nacimiento": null,
+    "telefono": "",
+    "es_premium": false,
+    "fecha_creacion": "2026-03-29T18:36:56.728Z",
+    "date_joined": "2026-03-29T18:36:56.728Z",
+    "is_active": true,
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$aKMUKBKdJRw1jGY9xmqJXL$P2sQWPhU5RQ6/jgV/6uca+yM4uI0dvt1T8kEe/R+8r4=",
+    "last_login": "2026-03-29T18:41:55.669Z",
+    "is_superuser": false,
+    "username": "castro",
+    "email": "castro@gmail.com",
+    "first_name": "",
+    "last_name": "",
+    "bio": "",
+    "avatar": "",
+    "fecha_nacimiento": null,
+    "telefono": "",
+    "es_premium": false,
+    "fecha_creacion": "2026-03-29T18:37:33.292Z",
+    "date_joined": "2026-03-29T18:37:33.292Z",
+    "is_active": true,
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 7,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$2wxHEEn9lj6QH2SXTsahPs$rxj9Vsopm1SHjsu9frkT7jRgmNOPrj81dwLSoD2hOTk=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "jaimeme",
+    "email": "jaimeme@gmail.com",
+    "first_name": "",
+    "last_name": "",
+    "bio": "",
+    "avatar": "",
+    "fecha_nacimiento": null,
+    "telefono": "",
+    "es_premium": false,
+    "fecha_creacion": "2026-03-29T18:42:42.698Z",
+    "date_joined": "2026-03-29T18:42:42.698Z",
+    "is_active": true,
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 8,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$KJRbogzsr5Yh4VsmwOczak$TkzyCmazL0tVwJh/wZ7uWQUOYwcr9dl45ait5XwL3Hk=",
+    "last_login": "2026-03-29T18:44:45.417Z",
+    "is_superuser": false,
+    "username": "castr",
+    "email": "castroleal@gmail.com",
+    "first_name": "",
+    "last_name": "",
+    "bio": "",
+    "avatar": "",
+    "fecha_nacimiento": null,
+    "telefono": "",
+    "es_premium": false,
+    "fecha_creacion": "2026-03-29T18:44:45.408Z",
+    "date_joined": "2026-03-29T18:44:45.408Z",
+    "is_active": true,
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 9,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$fHtz7tAcgkNwYI4gTXPx0c$nLn/eX2VRihPSgzXSM1TVok5+jdXa65GYdM47wq3dlk=",
+    "last_login": "2026-03-30T18:19:58.402Z",
+    "is_superuser": false,
+    "username": "seba",
+    "email": "seba@gmail.com",
+    "first_name": "",
+    "last_name": "",
+    "bio": "",
+    "avatar": "",
+    "fecha_nacimiento": null,
+    "telefono": "",
+    "es_premium": false,
+    "fecha_creacion": "2026-03-30T18:19:58.392Z",
+    "date_joined": "2026-03-30T18:19:58.392Z",
+    "is_active": true,
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 10,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$5jZos9OqSO6e88HmsripIC$h2m9URo2HndMJwEU9FibNagV4sWoAhFFbKyx2v4G75o=",
+    "last_login": "2026-03-31T20:27:44.842Z",
+    "is_superuser": false,
+    "username": "matias",
+    "email": "matias@gmail.com",
+    "first_name": "",
+    "last_name": "",
+    "bio": "",
+    "avatar": "",
+    "fecha_nacimiento": null,
+    "telefono": "",
+    "es_premium": false,
+    "fecha_creacion": "2026-03-31T20:27:07.949Z",
+    "date_joined": "2026-03-31T20:27:07.949Z",
+    "is_active": true,
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 11,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$KzxnJ5tBeIbAKfmzm20XRp$RL9XScBK/DcF3KaowfnGUuHItGd4y2Rv6cH61QGMpA8=",
+    "last_login": "2026-03-31T21:19:45.915Z",
+    "is_superuser": false,
+    "username": "matipxd1500",
+    "email": "matipxd1500@gmail.com",
+    "first_name": "",
+    "last_name": "",
+    "bio": "",
+    "avatar": "",
+    "fecha_nacimiento": null,
+    "telefono": "",
+    "es_premium": false,
+    "fecha_creacion": "2026-03-31T21:19:45.904Z",
+    "date_joined": "2026-03-31T21:19:45.904Z",
+    "is_active": true,
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 12,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$8bUlptecIdJ3uf7aw2YqiR$dNCeNM54/Pn9KuLVq566g3JYcSJq07PolZs86W1hefc=",
+    "last_login": "2026-03-31T21:22:41.601Z",
+    "is_superuser": false,
+    "username": "cr8",
+    "email": "cr8@gmail.com",
+    "first_name": "",
+    "last_name": "",
+    "bio": "",
+    "avatar": "",
+    "fecha_nacimiento": null,
+    "telefono": "",
+    "es_premium": false,
+    "fecha_creacion": "2026-03-31T21:22:01.885Z",
+    "date_joined": "2026-03-31T21:22:01.885Z",
+    "is_active": true,
+    "is_staff": false,
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "users.user",
+  "pk": 13,
+  "fields": {
+    "password": "pbkdf2_sha256$1000000$QuvRb6FRcuE6buekDY19nf$pUe4uArRm7uJ633/D4pP8BzkYNkAHV0SPBLLghm6GAg=",
+    "last_login": "2026-03-31T23:28:01.963Z",
+    "is_superuser": false,
+    "username": "DJJota",
+    "email": "castropaz1979@gmail.com",
+    "first_name": "",
+    "last_name": "",
+    "bio": "",
+    "avatar": "",
+    "fecha_nacimiento": null,
+    "telefono": "",
+    "es_premium": false,
+    "fecha_creacion": "2026-03-31T21:24:23.933Z",
+    "date_joined": "2026-03-31T21:24:23.933Z",
+    "is_active": true,
+    "is_staff": true,
+    "groups": [],
+    "user_permissions": []
+  }
+}
+]
