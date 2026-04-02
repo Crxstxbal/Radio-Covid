@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from decouple import config
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -98,28 +99,25 @@ TEMPLATES = [
 WSGI_APPLICATION = 'radio_web.wsgi.application'
 ASGI_APPLICATION = 'radio_web.asgi.application'
 
-# Database
-USE_SQLITE = config('USE_SQLITE', default=True, cast=bool)
-
-if USE_SQLITE:
+# Database - Usar DATABASE_URL si existe (Supabase/Render), sino SQLite
+if os.environ.get('DATABASE_URL'):
+    # Producción: PostgreSQL (Supabase, Render, etc.)
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ.get('DATABASE_URL'),
+            conn_max_age=600,
+            ssl_require=True  # Supabase requiere SSL
+        )
+    }
+else:
+    # Desarrollo: SQLite
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
             'OPTIONS': {
-                'timeout': 30,  # 30 segundos timeout
+                'timeout': 30,
             }
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': config('DB_NAME', default='radio_web'),
-            'USER': config('DB_USER', default='postgres'),
-            'PASSWORD': config('DB_PASSWORD', default=''),
-            'HOST': config('DB_HOST', default='localhost'),
-            'PORT': config('DB_PORT', default='5432'),
         }
     }
 
