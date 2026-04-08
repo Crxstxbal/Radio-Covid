@@ -71,6 +71,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'radio_web.middleware.DatabasePingMiddleware',  # Ping a BD para mantener conexiones vivas
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -112,6 +113,13 @@ if os.environ.get('DATABASE_URL'):
             conn_max_age=600,
         )
     }
+    # Opciones adicionales para estabilidad con Supabase Pooler
+    DATABASES['default']['OPTIONS'] = {
+        'connect_timeout': 10,
+        'options': '-c statement_timeout=30000',
+    }
+    # Configuración para reciclar conexiones cerradas por el pooler
+    DATABASES['default']['CONN_HEALTH_CHECKS'] = True
 else:
     # Desarrollo: SQLite
     DATABASES = {
