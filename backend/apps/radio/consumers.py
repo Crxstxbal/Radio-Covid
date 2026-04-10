@@ -1,4 +1,5 @@
 import json
+import asyncio
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from django.utils import timezone
@@ -25,8 +26,37 @@ class RadioConsumer(AsyncWebsocketConsumer):
         
         # Enviar conteo actual
         await self.enviar_conteo_actual()
+        
+        # Iniciar keepalive para mantener conexión activa (evita desconexiones de Render)
+        self.keepalive_task = asyncio.create_task(self.keepalive_loop())
+
+    async def keepalive_loop(self):
+        """Enviar ping cada 30 segundos para mantener conexión activa"""
+        try:
+            while True:
+                await asyncio.sleep(30)  # Ping cada 30 segundos
+                await self.send(text_data=json.dumps({
+                    'type': 'keepalive',
+                    'timestamp': timezone.now().isoformat()
+                }))
+        except asyncio.CancelledError:
+            # La conexión se cerró, terminar el loop
+            pass
+        except Exception as e:
+            print(f"Error en keepalive: {e}")
+            break
 
     async def disconnect(self, close_code):
+        """Manejar desconexión WebSocket"""
+        # Cancelar keepalive task
+        if hasattr(self, 'keepalive_task'):
+            self.keepalive_task.cancel()
+            try:
+                await self.keepalive_task
+            except asyncio.CancelledError:
+                pass
+        
+        # Marcar como no escuchando
         """Manejar desconexión WebSocket"""
         # Marcar como no escuchando
         await self.desregistrar_oyente()
