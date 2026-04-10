@@ -44,7 +44,7 @@ class RadioConsumer(AsyncWebsocketConsumer):
             pass
         except Exception as e:
             print(f"Error en keepalive: {e}")
-            break
+            return  # Salir del método si hay error
 
     async def disconnect(self, close_code):
         """Manejar desconexión WebSocket"""
